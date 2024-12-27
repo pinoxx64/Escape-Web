@@ -49,7 +49,7 @@ class userController extends Controller
             $user = User::create([
                 'name' => $request['name'],
                 'email' => $request['email'],
-                'password' => bycrypt($request['password']),
+                'password' => bcrypt($request['password']),
                 'active' => $request['active']
             ]);
             return response()->json(['user' => $user], Response::HTTP_CREATED);
