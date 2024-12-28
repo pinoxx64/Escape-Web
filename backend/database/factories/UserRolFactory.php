@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Rol>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\UserRol>
  */
-class RolFactory extends Factory
+class UserRolFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,9 +17,7 @@ class RolFactory extends Factory
     public function definition(): array
     {
         return [
-            ['name' => 'admin'],
-            ['name' => 'user'],
-            ['name' => 'almirante'],
+            //
         ];
     }
 }

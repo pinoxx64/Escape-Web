@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\rolController;
 use App\Http\Controllers\userController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -12,4 +13,7 @@ Route::prefix('user')->group(function () {
     Route::put('/{id}', [userController::class, 'putUser']);
 });
 
-
+Route::prefix('rol')->group(function () {
+    Route::get('/', [rolController::class, 'getRol']);
+    Route::get('/{id}', [rolController::class, 'getRolById']);
+});
