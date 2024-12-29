@@ -22,6 +22,7 @@ Route::prefix('rol')->group(function () {
 Route::prefix('userRol')->group(function () {
     Route::get('/', [userRolController::class, 'getUserRol']);
     Route::get('/user/{id}', [userRolController::class, 'getUserRolByUserId']);
+    Route::get('/rol/{id}', [userRolController::class, 'getUserRolByRolId']);
     Route::post('/', [userRolController::class, 'postUserRol']);
     Route::delete('/{userId}/{rolId}', [userRolController::class, 'deleteUserRolByIds']);
 });

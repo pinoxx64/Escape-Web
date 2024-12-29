@@ -25,6 +25,16 @@ class userRolController extends Controller
         return response()->json(['user' => $userRol]);
     }
 
+    public function getUserRolByRolId($id){
+        $userRol = userRol::where('rolId', $id)->get();
+
+        if (!$userRol) {
+            return response()->json(['message' => 'userRol don`t find'], 404);
+        }
+
+        return response()->json(['user' => $userRol]);
+    }
+
     public function postUserRol(Request $request){
         $validator = Validator::make($request->all(), [
             'userId' => 'required|integer',
