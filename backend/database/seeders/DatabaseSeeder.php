@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Rol;
 use App\Models\User;
+use App\Models\UserRol;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -18,7 +19,9 @@ class DatabaseSeeder extends Seeder
         foreach (Rol::factory()->definition() as $role) {
             Rol::create($role);
         }
-
+        $this->call([
+            UserRolSeeder::class
+        ]);
         // User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',

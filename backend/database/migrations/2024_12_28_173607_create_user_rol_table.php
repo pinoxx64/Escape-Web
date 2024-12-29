@@ -17,11 +17,10 @@ return new class extends Migration
             $table->unsignedBigInteger('rolId');
             $table->timestamps();
 
-            // Claves foráneas
             $table->foreign('userId')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('rolId')->references('id')->on('rol')->onDelete('cascade');
 
-            $table->unique(['userId', 'roleId']);
+            // $table->unique(['userId', 'rolId']);
         });
     }
 
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_rol');
+        Schema::dropIfExists('userRol');
     }
 };

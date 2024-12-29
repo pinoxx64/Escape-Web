@@ -11,4 +11,9 @@ class Rol extends Model
 
     protected $table="rol";
     protected $fillable = ['name'];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'userRol', 'rolId', 'userId');
+    }
 }

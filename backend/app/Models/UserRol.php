@@ -7,13 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class UserRol extends Model
 {
-    use HasFactory;
-
     protected $table = 'userRol';
 
     protected $fillable = [
         'userId',
-        'roleId',
+        'rolId',
     ];
 
     public $timestamps = true;

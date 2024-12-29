@@ -16,7 +16,7 @@ class userRolController extends Controller
     }
 
     public function getUserRolByUserId($id){
-        $userRol = userRol::find($id);
+        $userRol = userRol::where('userId', $id)->get();
 
         if (!$userRol) {
             return response()->json(['message' => 'user don`t find'], 404);
@@ -27,32 +27,32 @@ class userRolController extends Controller
 
     public function postUserRol(Request $request){
         $validator = Validator::make($request->all(), [
-            
+            'userId' => 'required|integer',
+            'rolId' => 'required|integer'
         ]);
 
         if ($validator->fails()) {
             return response(['errors' => $validator->errors()->all()], Response::HTTP_UNPROCESSABLE_ENTITY);
         }else{
             $userRol = UserRol::create([
-
+                'userId' => $request['userId'],
+                'rolId' => $request['rolId']
             ]);
             return response()->json(['user' => $userRol], Response::HTTP_CREATED);
         }
     }
 
-    public function putUserRol(Request $request, $id){
-        $userRol = userRol::find($id);
+    public function deleteUserRolByIds($userId, $rolId)
+    {
+        $userRol = UserRol::where('userId', $userId)
+                                ->where('rolId', $rolId)
+                                ->first();
 
-        if (!$userRol) {
-            return response()->json(['message' => 'user no encontrado'], 404);
+        if ($userRol) {
+            $userRol->delete();
+            return response()->json(['message' => 'Registro eliminado correctamente'], 200);
+        } else {
+            return response()->json(['message' => 'Registro no encontrado'], 404);
         }
-
-        $datosUserRol = [
-
-        ];
-
-        $userRol->update($datosUserRol);
-
-        return response()->json(['user' => $userRol], Response::HTTP_CREATED);
     }
 }
