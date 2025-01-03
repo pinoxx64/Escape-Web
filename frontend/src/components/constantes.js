@@ -4,4 +4,6 @@ export const constantes = {
     registro: 'register',
     login: 'login/',
     logout: 'logout/',
+
+    user: 'user/'
 }
