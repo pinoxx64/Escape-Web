@@ -123,3 +123,50 @@ export const putUser = async (userId, user) => {
         throw error
     }
 }
+
+export const getIfEmailExist = async (email) => {
+    const rutaUser = constantes.urlApi + constantes.usu
+
+    try {
+        const respuesta = await fetch(rutaUser + 'emailExist/' + email, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        if (!respuesta.ok) {
+            throw new Error(`Error al obtener el User. Código de estado: ${respuesta.status}`)
+        }
+
+        const User = await respuesta.json()
+        return User
+    } catch (error) {
+        console.error('Error en la función getUserByEmail:', error.message)
+        throw error
+    } 
+}
+
+export const getUserOrderByScore = async () => {
+    const rutaUser = constantes.urlApi + constantes.usu
+
+    try {
+        const respuesta = await fetch(rutaUser + '/score', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        if (!respuesta.ok) {
+            throw new Error(`Error al obtener la lista de users. Código de estado: ${respuesta.status}`)
+        }
+
+        const users = await respuesta.json()
+        return users
+
+    } catch (error) {
+        console.error('Error en la función getUser:', error.message)
+        throw error
+    }
+}

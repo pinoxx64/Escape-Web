@@ -13,6 +13,9 @@ Route::prefix('user')->group(function () {
     Route::get('/email/{email}', [userController::class, 'getUserByEmail']);
     Route::post('/', [userController::class, 'postUser']);
     Route::put('/{id}', [userController::class, 'putUser']);
+
+    Route::get('/emailExist/{email}', [userController::class, 'getIfEmailExist']);
+    Route::get('/score', [userController::class, 'getUserOrderByScore']);
 });
 
 Route::prefix('rol')->group(function () {

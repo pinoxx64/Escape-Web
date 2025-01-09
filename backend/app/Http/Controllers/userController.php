@@ -77,4 +77,19 @@ class userController extends Controller
 
         return response()->json(['user' => $user], Response::HTTP_CREATED);
     }
+
+    public function getIfEmailExist($email){
+        $user = user::where('email', $email)->first();
+
+        if ($user) {
+            return response(1);
+        }
+
+        return response(0);
+    }
+
+    public function getUserOrderByScore(){
+        $user = User::orderBy('score', 'desc')->get();
+        return response()->json(['user' => $user]);
+    }
 }
