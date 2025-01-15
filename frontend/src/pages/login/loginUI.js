@@ -47,20 +47,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
       console.log("Respuesta recibida del servidor:", response)
 
-      const data = await response.json()
-      console.log("Datos parseados desde la respuesta:", data)
+      console.log("Datos parseados desde la respuesta:", response)
 
-      if (response.ok && data.success) {
-        console.log("Inicio de sesión exitoso. ID del usuario:", data.data.id)
+      if (response.ok && response.success) {
+        console.log("Inicio de sesión exitoso. ID del usuario:", response.id)
 
-        sessionStorage.setItem('userId', data.data.id)
-        sessionStorage.setItem('token', data.data.token) 
+        sessionStorage.setItem('userId', response.response.id)
+        sessionStorage.setItem('token', response.response.token) 
 
         console.log("Datos guardados en sessionStorage. Redirigiendo...")
-        window.location.href = '../html/preInicio.html' 
+        window.location.href = '../inicio/inicio.html' 
       } else {
-        console.warn("Inicio de sesión fallido. Mensaje del servidor:", data.message)
-        alert(data.message || 'Error al iniciar sesión')
+        console.warn("Inicio de sesión fallido. Mensaje del servidor:", response.message)
+        alert(response.message || 'Error al iniciar sesión')
       }
     } catch (error) {
       console.error("Error en la solicitud fetch:", error)

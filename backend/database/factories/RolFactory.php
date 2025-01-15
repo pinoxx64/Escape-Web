@@ -20,6 +20,7 @@ class RolFactory extends Factory
             ['name' => 'admin'],
             ['name' => 'user'],
             ['name' => 'almirante'],
+            ['name' => 'editor'],
         ];
     }
 }

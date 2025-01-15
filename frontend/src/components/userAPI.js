@@ -74,25 +74,26 @@ export const getUserByEmail = async (email) => {
     
 // }
 
+
 export const register = async (user) => {
     const rutaUser = constantes.urlApi + constantes.registro
-
-    const formData = new FormData()
-    formData.append('name', user.name)
-    formData.append('email', user.email)
-    formData.append('password', user.password)
-    formData.append('confirm_password', user.confirm_password)
 
     try {
         const respuesta = await fetch(rutaUser, {
             method: 'POST',
-            body: formData,
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                //'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(user),
         })
         if (!respuesta.ok) {
             throw new Error(`Error al añadir el User. Código de estado: ${respuesta.status}`)
         }
 
         const resultado = await respuesta.json()
+        console.log(resultado)
         return resultado
     } catch (error) {
         console.error('Error en la función register:', error.message)
@@ -125,7 +126,7 @@ export const putUser = async (userId, user) => {
 }
 
 export const getIfEmailExist = async (email) => {
-    const rutaUser = constantes.urlApi + constantes.usu
+    const rutaUser = constantes.urlApi + constantes.user
 
     try {
         const respuesta = await fetch(rutaUser + 'emailExist/' + email, {
