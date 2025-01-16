@@ -40,25 +40,26 @@ document.addEventListener('DOMContentLoaded', () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          gmail: email,
+          email: email,
           password: password
         }),
       })
 
       console.log("Respuesta recibida del servidor:", response)
 
-      console.log("Datos parseados desde la respuesta:", response)
+      const resultado = await response.json()
+      console.log("Datos parseados desde la respuesta:", resultado)
 
-      if (response.ok && response.success) {
-        console.log("Inicio de sesión exitoso. ID del usuario:", response.id)
+      if (response.ok && resultado.success) {
+        console.log("Inicio de sesión exitoso. ID del usuario:", resultado.data.id)
 
-        sessionStorage.setItem('userId', response.response.id)
-        sessionStorage.setItem('token', response.response.token) 
+        sessionStorage.setItem('userId', resultado.data.id)
+        sessionStorage.setItem('token', resultado.data.token) 
 
         console.log("Datos guardados en sessionStorage. Redirigiendo...")
         window.location.href = '../inicio/inicio.html' 
       } else {
-        console.warn("Inicio de sesión fallido. Mensaje del servidor:", response.message)
+        console.warn("Inicio de sesión fallido. Mensaje del servidor:", resultado.message)
         alert(response.message || 'Error al iniciar sesión')
       }
     } catch (error) {

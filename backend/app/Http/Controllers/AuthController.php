@@ -88,6 +88,9 @@ class AuthController extends Controller
                     case 3:
                         $abilities[] = 'almirante';
                         break;
+                    case 4:
+                        $abilities[] = 'editor';
+                        break;
                     default:
                         break;
                 }
@@ -98,7 +101,7 @@ class AuthController extends Controller
             $success = [
                 'token' => $token,
                 'id' => $user->id,
-                'nombre' => $user->nombre,
+                'nombre' => $user->name,
                 'abilities' => $abilities
             ];
 
