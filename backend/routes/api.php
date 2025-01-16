@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\rolController;
 use App\Http\Controllers\userController;
 use App\Http\Controllers\userRolController;
@@ -12,6 +13,9 @@ Route::prefix('user')->group(function () {
     Route::get('/email/{email}', [userController::class, 'getUserByEmail']);
     Route::post('/', [userController::class, 'postUser']);
     Route::put('/{id}', [userController::class, 'putUser']);
+
+    Route::get('/emailExist/{email}', [userController::class, 'getIfEmailExist']);
+    Route::get('/score', [userController::class, 'getUserOrderByScore']);
 });
 
 Route::prefix('rol')->group(function () {
@@ -26,3 +30,7 @@ Route::prefix('userRol')->group(function () {
     Route::post('/', [userRolController::class, 'postUserRol']);
     Route::delete('/{userId}/{rolId}', [userRolController::class, 'deleteUserRolByIds']);
 });
+
+Route::post('login', [AuthController::class, 'login']);
+Route::post('register', [AuthController::class, 'register']);
+Route::post('logout', [AuthController::class, 'logout']);

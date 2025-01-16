@@ -40,27 +40,27 @@ document.addEventListener('DOMContentLoaded', () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          gmail: email,
+          email: email,
           password: password
         }),
       })
 
       console.log("Respuesta recibida del servidor:", response)
 
-      const data = await response.json()
-      console.log("Datos parseados desde la respuesta:", data)
+      const resultado = await response.json()
+      console.log("Datos parseados desde la respuesta:", resultado)
 
-      if (response.ok && data.success) {
-        console.log("Inicio de sesión exitoso. ID del usuario:", data.data.id)
+      if (response.ok && resultado.success) {
+        console.log("Inicio de sesión exitoso. ID del usuario:", resultado.data.id)
 
-        sessionStorage.setItem('userId', data.data.id)
-        sessionStorage.setItem('token', data.data.token) 
+        sessionStorage.setItem('userId', resultado.data.id)
+        sessionStorage.setItem('token', resultado.data.token) 
 
         console.log("Datos guardados en sessionStorage. Redirigiendo...")
-        window.location.href = '../html/preInicio.html' 
+        window.location.href = '../inicio/inicio.html' 
       } else {
-        console.warn("Inicio de sesión fallido. Mensaje del servidor:", data.message)
-        alert(data.message || 'Error al iniciar sesión')
+        console.warn("Inicio de sesión fallido. Mensaje del servidor:", resultado.message)
+        alert(response.message || 'Error al iniciar sesión')
       }
     } catch (error) {
       console.error("Error en la solicitud fetch:", error)
