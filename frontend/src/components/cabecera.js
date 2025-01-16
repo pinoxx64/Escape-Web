@@ -1,24 +1,25 @@
 import { getUserById, putUser } from "./userAPI.js"
+import { getUserRolByUserId } from "./userRolAPI.js"
 
 document.addEventListener("DOMContentLoaded", async () => {
-    const cabecera = async () => {
-        const headerContainer = document.getElementById("header-container")
+  const cabecera = async () => {
+    const headerContainer = document.getElementById("header-container")
 
-        const userId = sessionStorage.getItem("userId")
-        const user = await getUserById(userId)
+    const userId = sessionStorage.getItem("userId")
+    const user = await getUserById(userId)
+    const userRol = await getUserRolByUserId(userId)
 
-        if (user) {
-            headerContainer.innerHTML = `
+    if (user) {
+      headerContainer.innerHTML = `
               <!-- Cabecera -->
               <header class="header p-3 d-flex align-items-center justify-content-between shadow" style="background-color: #007bff; color: white;">
-                <div class="d-flex align-items-center">
-                  <button id="openSidebar" class="icon-desplegable btn btn-outline-light me-3" style="font-size: 1.2em;">☰</button>
-                  <a class="h4 mb-0 me-3 text-white" href="inicio.html">Hogwarts</a>
-                  <button class="btn" onclick="location.href='ranking.html'" style="background-color: #0056b3; color: white;">Ranking de Casas</button>
+                <div class="d-flex align-items-center" id="botonesCabecera">
+                  <a class="h4 mb-0 me-3 text-white" href="inicio.html">Escape Web</a>
+                  <button class="btn" onclick="location.href='../ranking/ranking.html'" style="background-color: #0056b3; color: white;">Ranking de jugadores</button>
                 </div>
                 
                 <div class="dropdown">
-                  <span class="me-2 text-white">${user.user.name}</span>
+                  <span class="me-2 text-white dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">${user.user.name}</span>
                   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                     <li><a class="dropdown-item" href="#" id="botonPerfil">Perfil</a></li>
                     <li><a class="dropdown-item" href="#" id="botonCerrarSesion">Cerrar sesión</a></li>
@@ -60,72 +61,79 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </div>
               </div>
             `
-        } else {
-            console.error("No se pudo cargar la información del usuario.");
+      console.log(userRol.user[0].rolId)
+      for (let i = 0; i < userRol.user.length; i++) {
+        if (userRol.user[i].rolId == 1) {
+          //Añadir botones admin (gestion usuarios)
+        }else if(userRol.user[i].rolId == 4){
+          //Añadir botones editor (gestion de puzzles)
         }
-
-        editarPerfil(user.user)
+      }
+    } else {
+      console.error("No se pudo cargar la información del usuario.");
     }
 
-    await cabecera()
+    document.getElementById("header-container").addEventListener("click", (event) => {
+      if (event.target && event.target.id === "botonPerfil") {
+        if (user) {
+          document.getElementById("name").value = user.user.name
+          document.getElementById("email").value = user.user.email
+          const modalPerfil = new bootstrap.Modal(document.getElementById('modalPerfil'))
+          modalPerfil.show()
+        }
+      }
+    })
+    editarPerfil(user.user)
+  }
+
+  await cabecera()
 })
 
 document.getElementById("header-container").addEventListener("click", (event) => {
-    if (event.target && event.target.id === "botonPerfil") {
-        if (usuario) {
-            document.getElementById("nombre").value = usuario.Usuario.nombre
-            document.getElementById("gmail").value = usuario.Usuario.gmail
-            const modalPerfil = new bootstrap.Modal(document.getElementById('modalPerfil'))
-            modalPerfil.show()
-        }
-    }
-});
-
-document.getElementById("header-container").addEventListener("click", (event) => {
-    if (event.target && event.target.id === "botonCerrarSesion") {
-        window.location.href = "http://localhost:5173/";
-    }
+  if (event.target && event.target.id === "botonCerrarSesion") {
+    window.location.href = "http://localhost:5173/";
+  }
 });
 
 async function editarPerfil(user) {
-    const modificarBtn = document.getElementById('guardarCambios')
+  const modificarBtn = document.getElementById('guardarCambios')
 
-    if (modificarBtn) {
+  if (modificarBtn) {
 
-        modificarBtn.addEventListener('click', async () => {
-            try {
+    modificarBtn.addEventListener('click', async () => {
+      try {
 
-                const modalElement = document.getElementById(`modalPerfil`)
-                const nameUsu = modalElement.querySelector(`#name`).value
-                const emailUsu = modalElement.querySelector(`#email`).value
-                const passwordUsu = modalElement.querySelector(`#passwprd`).value
+        const modalElement = document.getElementById(`modalPerfil`)
+        const nameUsu = modalElement.querySelector(`#name`).value
+        const emailUsu = modalElement.querySelector(`#email`).value
+        const passwordUsu = modalElement.querySelector(`#passwprd`).value
 
-                let userEdit
+        let userEdit
 
-                if (passwordUsu.trim() === "") {
-                  userEdit = {
-                    nombre: nameUsu,
-                    gmail: emailUsu,
-                    score: user.score,
-                    active: user.active
-                  }
-                }else{
-                  userEdit = {
-                    nombre: nameUsu,
-                    gmail: emailUsu,
-                    contrasena: passwordUsu,
-                    score: user.score,
-                    active: user.active
-                  }
-                }
-                await putUser(user.id, userEdit)
+        if (passwordUsu.trim() === "") {
+          userEdit = {
+            nombre: nameUsu,
+            gmail: emailUsu,
+            score: user.score,
+            active: user.active
+          }
+        } else {
+          userEdit = {
+            nombre: nameUsu,
+            gmail: emailUsu,
+            contrasena: passwordUsu,
+            score: user.score,
+            active: user.active
+          }
+        }
+        await putUser(user.id, userEdit)
 
-                const modal = new bootstrap.Modal(modalElement)
-                modal.hide();
-                location.reload()
-            } catch (error) {
-                console.error('Error al confirmar la modificación:', error)
-            }
-        });
-    }
+        const modal = new bootstrap.Modal(modalElement)
+        modal.hide();
+        location.reload()
+      } catch (error) {
+        console.error('Error al confirmar la modificación:', error)
+      }
+    });
   }
+}

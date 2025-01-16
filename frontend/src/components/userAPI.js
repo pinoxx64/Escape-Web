@@ -25,7 +25,7 @@ export const getUser = async () => {
 }
 
 export const getUserById = async (userId) => {
-    const rutaUser = constantes.urlApi + constantes.usu
+    const rutaUser = constantes.urlApi + constantes.user
 
     try {
         const respuesta = await fetch(rutaUser + userId, {
