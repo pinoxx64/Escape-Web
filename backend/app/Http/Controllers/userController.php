@@ -89,7 +89,7 @@ class userController extends Controller
     }
 
     public function getUserOrderByScore(){
-        $user = User::orderBy('score', 'desc')->get();
+        $user = User::orderBy('score', 'desc')->take(10)->get();
         return response()->json(['user' => $user]);
     }
 }

@@ -149,10 +149,10 @@ export const getIfEmailExist = async (email) => {
 }
 
 export const getUserOrderByScore = async () => {
-    const rutaUser = constantes.urlApi + constantes.usu
+    const rutaUser = constantes.urlApi + 'userScore'
 
     try {
-        const respuesta = await fetch(rutaUser + '/score', {
+        const respuesta = await fetch(rutaUser, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'

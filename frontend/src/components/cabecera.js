@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
               <!-- Cabecera -->
               <header class="header p-3 d-flex align-items-center justify-content-between shadow" style="background-color: #007bff; color: white;">
                 <div class="d-flex align-items-center" id="botonesCabecera">
-                  <a class="h4 mb-0 me-3 text-white" href="inicio.html">Escape Web</a>
+                  <a class="h4 mb-0 me-3 text-white" href="../inicio/inicio.html">Escape Web</a>
                   <button class="btn" onclick="location.href='../ranking/ranking.html'" style="background-color: #0056b3; color: white;">Ranking de jugadores</button>
                 </div>
                 
@@ -61,12 +61,16 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </div>
               </div>
             `
-      console.log(userRol.user[0].rolId)
+      console.log(userRol.user)
       for (let i = 0; i < userRol.user.length; i++) {
         if (userRol.user[i].rolId == 1) {
-          //Añadir botones admin (gestion usuarios)
+          document.getElementById("botonesCabecera").innerHTML += `
+            <button class="btn" onclick="location.href='../gestionUser/gestionUser.html'" style="background-color: #0056b3; color: white;">Administrar usuarios</button>
+          `
         }else if(userRol.user[i].rolId == 4){
-          //Añadir botones editor (gestion de puzzles)
+          document.getElementById("botonesCabecera").innerHTML += `
+            <button class="btn" onclick="location.href='../gestionPreguntas/gestionPregunta.html'" style="background-color: #0056b3; color: white;">Editor de puzzles</button>
+          `
         }
       }
     } else {
