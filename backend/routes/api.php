@@ -20,6 +20,9 @@ Route::prefix('userScore')->group(function () {
     Route::get('/', [userController::class, 'getUserOrderByScore']);
 });
 
+Route::prefix('userUserRol')->group(function () {
+    Route::get('/', [userController::class, 'getUsersWithUserRol']);
+});
 
 Route::prefix('rol')->group(function () {
     Route::get('/', [rolController::class, 'getRol']);
