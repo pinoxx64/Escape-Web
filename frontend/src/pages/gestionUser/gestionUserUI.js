@@ -1,4 +1,5 @@
 import { getUsersWithUserRol, putUser } from "../../components/userAPI.js"
+import { deleteUserRol, postUserRol } from "../../components/userRolAPI.js"
 
 document.addEventListener("DOMContentLoaded", function () {
     async function rellenarUsers() {
@@ -24,28 +25,26 @@ document.addEventListener("DOMContentLoaded", function () {
                 editarUserUI(userWithUserRols, usu.id)
                 document.body.insertAdjacentHTML('beforeend', deleteUserModal(usu))
                 eliminarUserUI(userWithUserRols, usu.id)
-                // document.body.insertAdjacentHTML('beforeend', editarRolModal(usu))
-                // editarRolesUI(userWithUserRols, usu.id)
+                document.body.insertAdjacentHTML('beforeend', editarRolModal(usu))
+                editarRolesUI(userWithUserRols, usu.id)
 
                 row.nodes().to$().data('Users', usu)
 
-                // const meterAdmin = document.getElementById(`alumno${usu.id}`)
-                // const meterProfe = document.getElementById(`profesor${usu.id}`)
-                // const meterAlumn = document.getElementById(`administrador${usu.id}`)
+                
+                const user = userWithUserRols.userRol.filter(u => u.userId == usu.id);  
+                const meterEditor = document.getElementById(`editor${usu.id}`)
+                const meterAdmin = document.getElementById(`admin${usu.id}`)
 
-                // for (let i = 0; i < roles.UserRoles.length; i++) {
-                //     if (roles.UserRoles[i].idUser == usu.id && roles.UserRoles[i].idRol == 2) {
-                //         meterAlumn.checked = true
-                //     }
+                console.log(user)
+                for (let i = 0; i < user.length; i++) {
+                    if (user[i].userId == usu.id && user[i].rolId == 4) {
+                        meterEditor.checked = true
+                    }
 
-                //     if (roles.UserRoles[i].idUser == usu.id && roles.UserRoles[i].idRol == 3) {
-                //         meterProfe.checked = true
-                //     }
-
-                //     if (roles.UserRoles[i].idUser == usu.id && roles.UserRoles[i].idRol == 4) {
-                //         meterAdmin.checked = true
-                //     }
-                // }
+                    if (user[i].userId == usu.id && user[i].rolId == 1) {
+                        meterAdmin.checked = true
+                    }
+                }
 
             } else {
                 const row = tabla.row.add([
@@ -117,15 +116,11 @@ document.addEventListener("DOMContentLoaded", function () {
                             </div>
                             <div class="modal-body" id="roles${usu.id}">
                                 <label>
-                                    <input type="checkbox" id="alumno${usu.id}"> Alumno
-                                </label><br>
-
-                                <label>  
-                                    <input type="checkbox" id="profesor${usu.id}"> Profesor
+                                    <input type="checkbox" id="editor${usu.id}"> Editor
                                 </label><br>
 
                                 <label>
-                                    <input type="checkbox" id="administrador${usu.id}"> Administrador
+                                    <input type="checkbox" id="admin${usu.id}"> Administrador
                                 </label><br>
                             </div>
                             <div class="modal-footer">
@@ -278,75 +273,53 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // async function editarRolesUI(id) {
-    //     const modificarRolBtn = document.getElementById(`editarRolBtn${id}`)
-    //     const roles = await mostrarRolesUser(id)
-    //     console.log(roles)
+    async function editarRolesUI(userWithUserRols, id) {
+        const userRol = userWithUserRols.userRol.filter(u => u.userId == id);
+        const modificarRolBtn = document.getElementById(`editarRolBtn${id}`)
 
-    //     if (modificarRolBtn) {
+        if (modificarRolBtn) {
 
-    //         modificarRolBtn.addEventListener('click', async () => {
-    //             try {
+            modificarRolBtn.addEventListener('click', async () => {
+                try {
 
-    //                 const modalElement = document.getElementById(`rolModal${id}`)
-    //                 const checkedAlumn = document.getElementById(`alumno${id}`)
-    //                 const checkedProfe = document.getElementById(`profesor${id}`)
-    //                 const checkedAdmin = document.getElementById(`administrador${id}`)
+                    const modalElement = document.getElementById(`rolModal${id}`)
+                    const checkedEdit = document.getElementById(`editor${id}`)
+                    const checkedAdmin = document.getElementById(`admin${id}`)
 
-    //                 console.log(roles.roles.find((rol) => rol.name))
-    //                 if (roles.roles.find((rol) => rol.name === "admin") && checkedAdmin.checked == false) {
-    //                     //decir de eliminar rol admin
-    //                     await deleteUserRol(id, 2)
-    //                 } else if (roles.roles.find((rol) => rol.name != "admin") && checkedAdmin.checked == true) {
-    //                     //decir de añadir rol admin
-    //                     const rolObjeto = {
-    //                         idUser: id,
-    //                         idRol: 2
-    //                     }
-    //                     await postUserRol(rolObjeto)
-    //                 }
+                    console.log(userRol.find((rol) => rol.rolId == 1))
+                    if (userRol.find((rol) => rol.rolId == 1) && checkedAdmin.checked == false) {
+                        //decir de eliminar rol admin
+                        await deleteUserRol(id, 1)
+                    } else if (userRol.find((rol) => rol.rolId == 1) == undefined && checkedAdmin.checked == true) {
+                        //decir de añadir rol admin
+                        const rolObjeto = {
+                            userId: id,
+                            rolId: 1
+                        }
+                        await postUserRol(rolObjeto)
+                    }
 
-    //                 if (roles.roles.find((rol) => rol.name === "profesor") && checkedProfe.checked == false) {
-    //                     //decir de eliminar rol profe
-    //                     await deleteUserRol(id, 3)
-    //                 } else if (roles.roles.find((rol) => rol.name != "profesor") && checkedProfe.checked == true) {
-    //                     //decir de añadir rol profe
-    //                     const rolObjeto = {
-    //                         idUser: id,
-    //                         idRol: 3
-    //                     }
-    //                     await postUserRol(rolObjeto)
-    //                 }
+                    if (userRol.find((rol) => rol.rolId == 4) && checkedEdit.checked == false) {
+                        //decir de eliminar rol admin
+                        await deleteUserRol(id, 4)
+                    } else if (userRol.find((rol) => rol.rolId == 4) == undefined && checkedEdit.checked == true) {
+                        //decir de añadir rol admin
+                        const rolObjeto = {
+                            userId: id,
+                            rolId: 4
+                        }
+                        await postUserRol(rolObjeto)
+                    }
 
-    //                 if (roles.roles.find((rol) => rol.name === "alumno") && checkedAlumn.checked == false) {
-    //                     //decir de eliminar rol alumn 
-    //                     await deleteUserRol(id, 4)
-    //                 } else if (roles.roles.find((rol) => rol.name != "alumno") && checkedAlumn.checked == true) {
-    //                     //decir de añadir rol alumn
-    //                     const rolObjeto = {
-    //                         idUser: id,
-    //                         idRol: 4
-    //                     }
-    //                     await postUserRol(rolObjeto)
-    //                 }
-
-    //                 if (roles.roles.find((rol) => rol.name != "alumno") && roles.roles.find((rol) => rol.name != "profesor") && roles.roles.find((rol) => rol.name != "admin") && roles.roles.find((rol) => rol.name != "Dumbledore")) {
-    //                     const rolObjeto = {
-    //                         idUser: id,
-    //                         idRol: 4
-    //                     }
-    //                     await postUserRol(rolObjeto)
-    //                 }
-
-    //                 const modal = new bootstrap.Modal(modalElement)
-    //                 modal.hide();
-    //                 location.reload()
-    //             } catch (error) {
-    //                 console.error('Error al confirmar la modificación:', error)
-    //             }
-    //         });
-    //     }
-    // }
+                    const modal = new bootstrap.Modal(modalElement)
+                    modal.hide();
+                    location.reload()
+                } catch (error) {
+                    console.error('Error al confirmar la modificación:', error)
+                }
+            });
+        }
+    }
 
     // async function crearUserUI() {
     //     const anadirBtn = document.getElementById(`anadirBtn`)
