@@ -102,7 +102,7 @@ export const register = async (user) => {
 }
 
 export const putUser = async (userId, user) => {
-    const rutaUser = constantes.urlApi + constantes.usu
+    const rutaUser = constantes.urlApi + constantes.user
     try {
         const respuesta = await fetch(rutaUser + userId, {
             method: 'PUT',
@@ -149,10 +149,34 @@ export const getIfEmailExist = async (email) => {
 }
 
 export const getUserOrderByScore = async () => {
-    const rutaUser = constantes.urlApi + constantes.usu
+    const rutaUser = constantes.urlApi + 'userScore'
 
     try {
-        const respuesta = await fetch(rutaUser + '/score', {
+        const respuesta = await fetch(rutaUser, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        if (!respuesta.ok) {
+            throw new Error(`Error al obtener la lista de users. Código de estado: ${respuesta.status}`)
+        }
+
+        const users = await respuesta.json()
+        return users
+
+    } catch (error) {
+        console.error('Error en la función getUser:', error.message)
+        throw error
+    }
+}
+
+export const getUsersWithUserRol= async () => {
+    const rutaUser = constantes.urlApi + 'userUserRol'
+
+    try {
+        const respuesta = await fetch(rutaUser, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'

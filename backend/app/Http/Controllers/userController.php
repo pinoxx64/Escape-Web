@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\UserRol;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\Request;
@@ -89,7 +90,13 @@ class userController extends Controller
     }
 
     public function getUserOrderByScore(){
-        $user = User::orderBy('score', 'desc')->get();
+        $user = User::orderBy('score', 'desc')->take(10)->get();
         return response()->json(['user' => $user]);
+    }
+
+    public function getUsersWithUserRol(){
+        $user = self::getUser();
+        $userRol = UserRol::all();
+        return response()->json(['user' => $user, 'userRol' => $userRol]);
     }
 }
