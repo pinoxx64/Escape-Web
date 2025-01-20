@@ -38,13 +38,13 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <div class="modal-body" style="color: black;"> 
                       <form id="perfilUsuarioForm">
                         <div class="col-md-6">
-                          <label for="name" class="form-label">Nombre:</label>
+                          <label for="name" class="form-label">name:</label>
                           <input class="form-control" type="text" id="name" name="name">
                         </div>
                         
                         <div class="col-md-6">
                           <label class="form-label" for="email">Correo Electrónico:</label>
-                          <input class="form-control" type="email" id="email" name="email">
+                          <input class="form-control" type="email" id="email" name="email" readonly>
                         </div>
       
                         <div class="col-md-6">
@@ -110,22 +110,22 @@ async function editarPerfil(user) {
         const modalElement = document.getElementById(`modalPerfil`)
         const nameUsu = modalElement.querySelector(`#name`).value
         const emailUsu = modalElement.querySelector(`#email`).value
-        const passwordUsu = modalElement.querySelector(`#passwprd`).value
+        const passwordUsu = modalElement.querySelector(`#password`).value
 
         let userEdit
-
+        
         if (passwordUsu.trim() === "") {
           userEdit = {
-            nombre: nameUsu,
-            gmail: emailUsu,
+            name: nameUsu,
+            email: emailUsu,
             score: user.score,
             active: user.active
           }
         } else {
           userEdit = {
-            nombre: nameUsu,
-            gmail: emailUsu,
-            contrasena: passwordUsu,
+            name: nameUsu,
+            email: emailUsu,
+            password: passwordUsu,
             score: user.score,
             active: user.active
           }

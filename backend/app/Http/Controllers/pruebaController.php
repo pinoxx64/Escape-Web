@@ -10,12 +10,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 class pruebaController extends Controller
 {
-    public function getPruebas(){
+    public function getPruebas()
+    {
         $prueba = Prueba::all();
         return response()->json(['Prueba' => $prueba]);
     }
 
-    public function getPruebaById($id){
+    public function getPruebaById($id)
+    {
         $prueba = Prueba::find($id);
 
         if (!$prueba) {
@@ -25,18 +27,17 @@ class pruebaController extends Controller
         return response()->json(['Prueba' => $prueba]);
     }
 
-    public function postPrueba(Request $request){
+    public function postPrueba(Request $request)
+    {
         $validator = Validator::make($request->all(), [
-            'question' => 'required|string',
-            'answer' => 'required|string',
             'clue' => 'required|string',
-            'answerSelect' => 'required|string',
-            'active' => 'required|boleean'
+            'answerSelect' => 'string',
+            'active' => 'required|integer'
         ]);
 
         if ($validator->fails()) {
             return response(['errors' => $validator->errors()->all()], Response::HTTP_UNPROCESSABLE_ENTITY);
-        }else{
+        } else {
             $prueba = Prueba::create([
                 'question' => $request['question'],
                 'answer' => $request['answer'],
@@ -48,31 +49,16 @@ class pruebaController extends Controller
         }
     }
 
-    public function putPrueba(Request $request, $id){
+    public function putPrueba(Request $request, $id)
+    {
         $prueba = Prueba::find($id);
 
-        if (!$prueba) {
-            return response()->json(['message' => 'Prueba don`t find'], 404);
-        }
-
-        $validator = Validator::make($request->all(), [
-            'question' => 'required|string',
-            'answer' => 'required|string',
-            'clue' => 'required|string',
-            'answerSelect' => 'required|string',
-            'active' => 'required|boleean'
-        ]);
-
-        if ($validator->fails()) {
-            return response(['errors' => $validator->errors()->all()], Response::HTTP_UNPROCESSABLE_ENTITY);
-        }else{
-            $prueba->question = $request['question'];
-            $prueba->answer = $request['answer'];
-            $prueba->clue = $request['clue'];
-            $prueba->answerSelect = $request['answerSelect'];
-            $prueba->active = $request['active'];
-            $prueba->save();
-            return response()->json(['Prueba' => $prueba], Response::HTTP_OK);
-        }
+        $prueba->question = $request['question'];
+        $prueba->answer = $request['answer'];
+        $prueba->clue = $request['clue'];
+        $prueba->answerSelect = $request['answerSelect'];
+        $prueba->active = $request['active'];
+        $prueba->save();
+        return response()->json(['Prueba' => $prueba], Response::HTTP_OK);
     }
-}
+}   

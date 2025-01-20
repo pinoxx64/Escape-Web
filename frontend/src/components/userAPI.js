@@ -1,7 +1,7 @@
 import { constantes } from "./constantes.js"
 
 export const getUser = async () => {
-    const rutaUser = constantes.urlApi + constantes.usu
+    const rutaUser = constantes.urlApi + constantes.user
 
     try {
         const respuesta = await fetch(rutaUser, {
@@ -48,7 +48,7 @@ export const getUserById = async (userId) => {
 }
 
 export const getUserByEmail = async (email) => {
-    const rutaUser = constantes.urlApi + constantes.usu
+    const rutaUser = constantes.urlApi + constantes.user
 
     try {
         const respuesta = await fetch(rutaUser + 'email/' + email, {

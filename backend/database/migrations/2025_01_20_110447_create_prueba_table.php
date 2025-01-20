@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('prueba', function (Blueprint $table) {
             $table->id();
             $table->longText('question');
-            $table->string('answer');
+            $table->longText('answer');
             $table->string('clue');
-            $table->string('answerSelect')->nullable();
+            $table->longText('answerSelect')->nullable();
             $table->boolean('active')->default(1);
             $table->timestamps();
         });

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\pruebaController;
 use App\Http\Controllers\rolController;
 use App\Http\Controllers\userController;
 use App\Http\Controllers\userRolController;
@@ -35,6 +36,13 @@ Route::prefix('userRol')->group(function () {
     Route::get('/rol/{id}', [userRolController::class, 'getUserRolByRolId']);
     Route::post('/', [userRolController::class, 'postUserRol']);
     Route::delete('/{userId}/{rolId}', [userRolController::class, 'deleteUserRolByIds']);
+});
+
+Route::prefix('prueba')->group(function () {
+    Route::get('/', [pruebaController::class, 'getPruebas']);
+    Route::get('/{id}', [pruebaController::class, 'getPruebaById']);
+    Route::post('/', [pruebaController::class, 'postPrueba']);
+    Route::put('/{id}', [pruebaController::class, 'putPrueba']);
 });
 
 Route::post('login', [AuthController::class, 'login']);
