@@ -27,9 +27,9 @@ class pruebaController extends Controller
 
     public function postPrueba(Request $request){
         $validator = Validator::make($request->all(), [
-            'question' => 'required|string|max:255',
-            'answer' => 'required|string|max:255',
-            'clue' => 'required|string|max:255'
+            'question' => 'required|string',
+            'answer' => 'required|string',
+            'clue' => 'required|string'
         ]);
 
         if ($validator->fails()) {
