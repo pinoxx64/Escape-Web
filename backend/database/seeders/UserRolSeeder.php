@@ -19,6 +19,14 @@ class UserRolSeeder extends Seeder
                 'rolId' => 1
             ],
             [
+                'userId' => 1,
+                'rolId' => 2
+            ],
+            [
+                'userId' => 1,
+                'rolId' => 3
+            ],
+            [
                 'userId' => 2,
                 'rolId' => 2
             ],

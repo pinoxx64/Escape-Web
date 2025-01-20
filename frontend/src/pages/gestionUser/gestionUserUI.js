@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     usu.score,
                     `<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#myModal${usu.id}"><i class="fas fa-edit"></i> Editar</button>` +
                     `<button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal${usu.id}" ><i class="fas fa-trash-alt"></i> Eliminar</button>` +
-                    `<button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#rolModal${usu.id}" ><i class="fas fa-trash-alt"></i> Roles</button>`
+                    `<button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#rolModal${usu.id}" ><i class="fas fa-trash-alt"></i> Roles</button>`
                 ]).draw()
 
                 document.body.insertAdjacentHTML('beforeend', editarUserModal(usu))
@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     usu.email,
                     usu.score,
                     `<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#myModal${usu.id}"><i class="fas fa-edit"></i> Editar</button>` +
-                    `<button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#activeModal${usu.id}" ><i class="fas fa-trash-alt"></i> Añadir</button>`
+                    `<button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#activeModal${usu.id}" ><i class="fas fa-trash-alt"></i> Añadir</button>`
                 ]).draw()
 
                 document.body.insertAdjacentHTML('beforeend', editarUserModal(usu))

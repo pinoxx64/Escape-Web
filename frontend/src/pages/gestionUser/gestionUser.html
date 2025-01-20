@@ -32,7 +32,7 @@
                             <thead>
                                 <tr>
                                     <th>Nombre</th>
-                                    <th>Gmail</th>
+                                    <th>email</th>
                                     <th>Puntos</th>
                                     <th>Acciones</th>
                                 </tr>
@@ -53,41 +53,25 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-sm-12 col-md-6 col-lg-6">
-                                <label for="nombre" class="form-label">Nombre</label>
-                                <input type="text" id="nombre" name="nombre" class="form-control">
-                                <div class="invalid-feedback" id="mensajeNombre"></div>
+                                <label for="name" class="form-label">Nombre</label>
+                                <input type="text" id="name" name="name" class="form-control">
+                                <div class="invalid-feedback" id="mensajename"></div>
                             </div>
     
                             <div class="col-sm-12 col-md-6 col-lg-6">
-                                <label for="gmail" class="form-label">Gmail</label>
-                                <input type="text" id="gmail" name="gmail" class="form-control">
-                                <div class="invalid-feedback" id="mensajegmail"></div>
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" id="email" name="email" class="form-control">
+                                <div class="invalid-feedback" id="mensajeemail"></div>
                             </div>
     
                             <div class="col-sm-12 col-md-6 col-lg-6">
-                                <label for="casa" class="form-label">Casa</label>
-                                <select class="form-select" id="casa">
-                                  <option value="">Selecciona tu casa</option>
-                                  <option value="0">Gryffindor</option>
-                                  <option value="1">Hufflepuff</option>
-                                  <option value="2">Ravenclaw</option>
-                                  <option value="3">Slytherin</option>
-                                </select>
-                            </div>
-    
-                            <div class="col-sm-12 col-md-6 col-lg-6">
-                                <label for="contrasena" class="form-label">Contraseña</label>
-                                <input type="password" class="form-control" id="contrasena">
-                            </div>
-    
-                            <div class="col-sm-12 col-md-6 col-lg-6">
-                                <label for="foto" class="form-label">Subir Foto</label>
-                                <input type="file" class="form-control" id="foto">
+                                <label for="password" class="form-label">Contraseña</label>
+                                <input type="password" class="form-control" id="password">
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="anadirBtn">Añadir hechizo</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="anadirBtn">Añadir Usuario</button>
                     </div>
                 </div>
             </div>
