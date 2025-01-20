@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('prueba', function (Blueprint $table) {
             $table->id();
-            $table->string('question');
+            $table->longText('question');
             $table->string('answer');
             $table->string('clue');
-            $table->string('answerSelect');
+            $table->string('answerSelect')->nullable();
             $table->boolean('active')->default(1);
             $table->timestamps();
         });

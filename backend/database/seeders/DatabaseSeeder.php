@@ -21,9 +21,9 @@ class DatabaseSeeder extends Seeder
             Rol::create($role);
         }
         $this->call([
-            UserRolSeeder::class
+            UserRolSeeder::class,
+            PruebaSeeder::class
         ]);
-        Prueba::factory()->create();
         // User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
