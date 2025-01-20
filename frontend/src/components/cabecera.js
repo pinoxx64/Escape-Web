@@ -12,10 +12,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (user) {
       headerContainer.innerHTML = `
               <!-- Cabecera -->
-              <header class="header p-3 d-flex align-items-center justify-content-between shadow" style="background-color: #007bff; color: white;">
+              <header class="header p-3 d-flex align-items-center justify-content-between shadow" style="background-color: #00aaaa; color: white;">
                 <div class="d-flex align-items-center" id="botonesCabecera">
                   <a class="h4 mb-0 me-3 text-white" href="../inicio/inicio.html">Escape Web</a>
-                  <button class="btn" onclick="location.href='../ranking/ranking.html'" style="background-color: #0056b3; color: white;">Ranking de jugadores</button>
+                  <button class="btn" onclick="location.href='../ranking/ranking.html'" style="background-color: #ff4040; color: white;">Ranking de jugadores</button>
                 </div>
                 
                 <div class="dropdown">
@@ -65,11 +65,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       for (let i = 0; i < userRol.user.length; i++) {
         if (userRol.user[i].rolId == 1) {
           document.getElementById("botonesCabecera").innerHTML += `
-            <button class="btn" onclick="location.href='../gestionUser/gestionUser.html'" style="background-color: #0056b3; color: white;">Administrar usuarios</button>
+            <button class="btn" onclick="location.href='../gestionUser/gestionUser.html'" style="background-color: #ff4040; color: white;">Administrar usuarios</button>
           `
         }else if(userRol.user[i].rolId == 4){
           document.getElementById("botonesCabecera").innerHTML += `
-            <button class="btn" onclick="location.href='../gestionPreguntas/gestionPregunta.html'" style="background-color: #0056b3; color: white;">Editor de puzzles</button>
+            <button class="btn" onclick="location.href='../gestionPreguntas/gestionPregunta.html'" style="background-color: #ff4040; color: white;">Editor de puzzles</button>
           `
         }
       }

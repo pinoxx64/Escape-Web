@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
     `
     }
 
-    function editarRolModal(usu) {
+    function editarRolModal(usu) { //Aqui es donde tengo que añadir que si es el mismo usuario logeado al usuario el rol de admin le salga como readonly
         return `
                 <div class="modal" id="rolModal${usu.id}">
                     <div class="modal-dialog modal-md">
