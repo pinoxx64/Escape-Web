@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Prueba;
 use App\Models\Rol;
 use App\Models\User;
 use App\Models\UserRol;
@@ -22,6 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserRolSeeder::class
         ]);
+        Prueba::factory()->create();
         // User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',

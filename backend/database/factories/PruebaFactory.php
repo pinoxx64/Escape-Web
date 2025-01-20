@@ -38,12 +38,17 @@ class PruebaFactory extends Factory
                     Es a la izquierda de la
                     Mujer donde se pudrirá",
                 'answer' => 'Vacio, Anciano, Mujer, Vacio, Serpiente',
-                'clue' => 'Al lado derecho de la mujer hay un hueco vacio'
+                'clue' => 'Al lado derecho de la mujer hay un hueco vacio',
+                'answerSelect' => 'Vacio, Anciano, Mujer, Serpiente',
+                'active' => 1
+
             ],
             [
                 'question' => 'Entras en una habitación con una caja fuerte y una nota con la siguiente nota: 11 >> X2 << V4 >> 3 <<',
-                'answer' => '11 Derecha, 12 Izquierda, 9 Derecha, 3 Izquierda',
-                'clue' => 'Son numeros normales mezclados con numeros romanos'
+                'answer' => '11, 12, 9, 3', //Derecha, Izquierda, Derecha, Izquierda
+                'clue' => 'Son numeros normales mezclados con numeros romanos',
+                'answerSelect' => 'Vacio, Anciano, Mujer, Serpiente',
+                'active' => 1
             ],
             [
                 'question' => '
@@ -61,7 +66,9 @@ class PruebaFactory extends Factory
                     al lado de cada una están los nombres de: Henry, Mildred, y Scott, respectivamente.
                 ',
                 'answer' => '9:10:15',
-                'clue' => 'Henry, Mildred y Scott son las agujas del reloj'
+                'clue' => 'Henry, Mildred y Scott son las agujas del reloj',
+                'answerSelect' => null,
+                'active' => 1
             ],
             [
                 'question' => '
@@ -73,7 +80,9 @@ class PruebaFactory extends Factory
                 'clue' => '
                     Nomenclatura latina: Do Re Mi Fa Sol La Si Do, 
                     Cifrado americano: C D E F G A B C
-                '
+                ',
+                'answerSelect' => 'Do, Re, Mi, Fa, Sol, La, Si',
+                'active' => 1
             ],
             [
                 'question' => '
@@ -85,7 +94,9 @@ class PruebaFactory extends Factory
                     y finalmente otro de la entrada de un hospital con 4 arboles.
                 ',
                 'answer' => '724',
-                'clue' => 'Las enfemeras apartadas ya no estan en el hospital'
+                'clue' => 'Las enfemeras apartadas ya no estan en el hospital',
+                'answerSelect' => null,
+                'active' => 1
             ]
         ];
     }

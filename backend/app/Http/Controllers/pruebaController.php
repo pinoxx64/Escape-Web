@@ -29,7 +29,9 @@ class pruebaController extends Controller
         $validator = Validator::make($request->all(), [
             'question' => 'required|string',
             'answer' => 'required|string',
-            'clue' => 'required|string'
+            'clue' => 'required|string',
+            'answerSelect' => 'required|string',
+            'active' => 'required|boleean'
         ]);
 
         if ($validator->fails()) {
@@ -38,9 +40,39 @@ class pruebaController extends Controller
             $prueba = Prueba::create([
                 'question' => $request['question'],
                 'answer' => $request['answer'],
-                'clue' => $request['clue']
+                'clue' => $request['clue'],
+                'answerSelect' => $request['answerSelect'],
+                'active' => $request['active']
             ]);
             return response()->json(['Prueba' => $prueba], Response::HTTP_CREATED);
+        }
+    }
+
+    public function putPrueba(Request $request, $id){
+        $prueba = Prueba::find($id);
+
+        if (!$prueba) {
+            return response()->json(['message' => 'Prueba don`t find'], 404);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'question' => 'required|string',
+            'answer' => 'required|string',
+            'clue' => 'required|string',
+            'answerSelect' => 'required|string',
+            'active' => 'required|boleean'
+        ]);
+
+        if ($validator->fails()) {
+            return response(['errors' => $validator->errors()->all()], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }else{
+            $prueba->question = $request['question'];
+            $prueba->answer = $request['answer'];
+            $prueba->clue = $request['clue'];
+            $prueba->answerSelect = $request['answerSelect'];
+            $prueba->active = $request['active'];
+            $prueba->save();
+            return response()->json(['Prueba' => $prueba], Response::HTTP_OK);
         }
     }
 }

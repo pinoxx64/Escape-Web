@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('question');
             $table->string('answer');
             $table->string('clue');
+            $table->string('answerSelect');
+            $table->boolean('active')->default(1);
             $table->timestamps();
         });
     }

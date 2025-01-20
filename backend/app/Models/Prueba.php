@@ -13,6 +13,8 @@ class Prueba extends Model
     protected $fillable = [
         'question',
         'answer',
-        'clue'
+        'clue',
+        'answerSelect',
+        'active'
     ];
 }
