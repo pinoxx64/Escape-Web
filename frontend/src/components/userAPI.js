@@ -195,3 +195,27 @@ export const getUsersWithUserRol= async () => {
         throw error
     }
 }
+
+export const getUsersExcludingId = async (id, num) => {
+    const rutaUser = constantes.urlApi + constantes.user + 'userExclude/' + id + '/' + num
+
+    try {
+        const respuesta = await fetch(rutaUser, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        if (!respuesta.ok) {
+            throw new Error(`Error al obtener la lista de users. Código de estado: ${respuesta.status}`)
+        }
+
+        const users = await respuesta.json()
+        return users
+
+    } catch (error) {
+        console.error('Error en la función getUser:', error.message)
+        throw error
+    }
+}

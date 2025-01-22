@@ -99,4 +99,15 @@ class userController extends Controller
         $userRol = UserRol::all();
         return response()->json(['user' => $user, 'userRol' => $userRol]);
     }
+
+    public function getUsersExcludingId($id, $num)
+    {
+        $users = User::where('id', '!=', $id)->take($num)->get();
+
+        if ($users->isEmpty()) {
+            return response()->json(['message' => 'No users found'], 404);
+        }
+
+        return response()->json(['users' => $users]);
+    }
 }

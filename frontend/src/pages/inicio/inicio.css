@@ -67,3 +67,7 @@ a:hover {
     color: #f39c12;
     text-decoration: underline;
 }
+
+.modal-content.text-black {
+    color: black;
+}
