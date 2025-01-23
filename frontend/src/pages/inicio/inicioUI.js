@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("botonJuego").addEventListener("click", () => {
         const modal = new bootstrap.Modal(document.getElementById('buscarPartidaModal'))
         modal.show()
-        sessionStorage.setItem("jugadores", 5 - Math.floor(Math.random() * 3))
+        sessionStorage.setItem("jugadores", 5 - Math.floor(Math.random() * 3) - 1)
 
         setTimeout(() => {
             modal.hide()
