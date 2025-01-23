@@ -110,4 +110,21 @@ class userController extends Controller
 
         return response()->json(['users' => $users]);
     }
+
+    public function getUsersCantWithId($id, $cant)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        $users = User::where('id', '!=', $id)->take($cant)->get();
+
+        if ($users->isEmpty()) {
+            return response()->json(['message' => 'No users found'], 404);
+        }
+
+        return response()->json(['user' => $user, 'user' => $users]);
+    }
 }

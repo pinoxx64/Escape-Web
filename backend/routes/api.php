@@ -14,9 +14,10 @@ Route::prefix('user')->group(function () {
     Route::get('/email/{email}', [userController::class, 'getUserByEmail']);
     Route::post('/', [userController::class, 'postUser']);
     Route::put('/{id}', [userController::class, 'putUser']);
-
     Route::get('/emailExist/{email}', [userController::class, 'getIfEmailExist']);
     Route::get('/userExclude/{id}/{num}', [userController::class, 'getUsersExcludingId']);
+    Route::get('/userCant/{num}', [userController::class, 'getUsersCant']);
+    Route::get('/userCantWithId/{id}/{num}', [userController::class, 'getUsersCantWithId']);
 });
 Route::prefix('userScore')->group(function () {
     Route::get('/', [userController::class, 'getUserOrderByScore']);
