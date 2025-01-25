@@ -1,7 +1,7 @@
 import { getUsersCantWithId } from "../../components/userAPI.js"
 import { getPreguntas } from "../../components/preguntaAPI.js"
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const cantJug = sessionStorage.getItem('jugadores')
     const userId = sessionStorage.getItem('userId')
 
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
         //Darle al jugador una pregunta
         const numAle = Math.floor(Math.random() * preguntas.Prueba.length)
         const preguntaJugador = preguntas.Prueba[numAle]
-        
+
         console.log(preguntaJugador)
         //Mostrar la pregunta en la pantalla, el tiempo restante, las llaves conseguidas y un boton para dar un pista (reducira el tiempo 3 minutos)
         mostrarPregunta(preguntaJugador)
@@ -68,38 +68,71 @@ document.addEventListener('DOMContentLoaded', function() {
         const answer = pregunta.answer;
         console.log(answer.length)
 
-        answerElement.innerHTML = `
-        <div class="answer">
-            <label for="answer">Respuesta</label>
-            <input type="text" id="answer" class="form-control">
-            <button class="btn btn-primary mt-3" id="answerButton">Responder</button>
-        </div>
-    `
+        answerElement.innerHTML = ``
 
         if (answer.indexOf(',') > 0) { //Select
-            let comas = 0
             for (let i = 0; i < answer.length; i++) {
                 if (answer[i] === ',') {
-                answerElement.innerHTML += `` //Poner un select con las opciones de answerSelect 
+                    answerElement.innerHTML += `
+                    <select name="answerSelect" id="answerSelect" class="form-select mt-3">
+                `
+                }
+                const selectElement = document.querySelector('#answerSelect');
+                if (pregunta.answerSelect != null) {
+                    for (let j = 0; j < pregunta.answerSelect.length; j++) {
+                        selectElement.innerHTML += `
+                    <option value="${pregunta.answerSelect[i]}">${pregunta.answerSelect[i]}</option>
+                `
+                    }
                 }
             }
+            answerElement.innerHTML += `<button class="btn btn-primary mt-3" id="answerButton">Responder</button>`
 
+        } else if (answer.indexOf(':') > 0) { //Horas
+            answerElement.innerHTML += `
+                <div class="answer">
+                    <label for="answer">Respuesta</label>
+                    <input type="time" id="answer" class="form-control">
+                    <button class="btn btn-primary mt-3" id="answerButton">Responder</button>
+                </div>
+            `
 
-        }else if (answer.indexOf(':') > 0) { //Horas
-            
-        }else if (answer.indexOf('/') > 0) { //Fecha
-
+        } else if (answer.indexOf('/') > 0) { //Fecha
+            answerElement.innerHTML += `
+            <div class="answer">
+                <label for="answer">Respuesta</label>
+                <input type="date" id="answer" class="form-control">
+                <button class="btn btn-primary mt-3" id="answerButton">Responder</button>
+            </div>
+        `
+        }else{
+            answerElement.innerHTML += `
+            <div class="answer">
+                <label for="answer">Respuesta</label>
+                <input type="text" id="answer" class="form-control">
+                <button class="btn btn-primary mt-3" id="answerButton">Responder</button>
+            </div>
+        `
         }
         // ver e imprimir cuantas llaves tienen
+
+        const llavesElement = document.createElement('div');
+        llavesElement.classList.add('llaves');
+        const llaves = sessionStorage.getItem('llaves');
+        llavesElement.innerHTML = `
+            <h2>Llaves</h2>
+            <p>${llaves}/5</p>
+        `;
 
         mainContent.appendChild(questionElement);
         mainContent.appendChild(clueButtonElement);
         mainContent.appendChild(clueModalElement);
         mainContent.appendChild(answerElement);
+        mainContent.appendChild(llavesElement);
 
         document.body.insertAdjacentHTML('beforeend', clueModal);
     }
 
     juego()
-    
+
 });
