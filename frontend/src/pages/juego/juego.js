@@ -10,12 +10,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const preguntas = await getPreguntas()
 
         console.log(preguntas)
-        //Darle al jugador una pregunta
+
         const numAle = Math.floor(Math.random() * preguntas.Prueba.length)
         const preguntaJugador = preguntas.Prueba[numAle]
 
-        console.log(preguntaJugador)
-        //Mostrar la pregunta en la pantalla, el tiempo restante, las llaves conseguidas y un boton para dar un pista (reducira el tiempo 3 minutos)
         mostrarPregunta(preguntaJugador)
 
         //Empezar el temporizador de 30 minutos
@@ -70,25 +68,30 @@ document.addEventListener('DOMContentLoaded', function () {
 
         answerElement.innerHTML = ``
 
-        if (answer.indexOf(',') > 0) { //Select
+        if (answer.indexOf(',') > 0) {
+            let comas = 0
             for (let i = 0; i < answer.length; i++) {
                 if (answer[i] === ',') {
-                    answerElement.innerHTML += `
-                    <select name="answerSelect" id="answerSelect" class="form-select mt-3">
-                `
+                    comas++
                 }
-                const selectElement = document.querySelector('#answerSelect');
-                if (pregunta.answerSelect != null) {
-                    for (let j = 0; j < pregunta.answerSelect.length; j++) {
-                        selectElement.innerHTML += `
-                    <option value="${pregunta.answerSelect[i]}">${pregunta.answerSelect[i]}</option>
-                `
-                    }
+            }
+            if (comas > 0) {
+                answerElement.innerHTML += `
+                <select name="answerSelect" id="answerSelect" class="form-select mt-3">
+            `
+                
+            }
+            const selectElement = document.querySelector('#answerSelect');
+            if (pregunta.answerSelect != null) {
+                for (let j = 0; j < comas+1; j++) {
+                    selectElement.innerHTML += `
+                <option value="${pregunta.answerSelect[i]}">${pregunta.answerSelect[i]}</option>
+            `
                 }
             }
             answerElement.innerHTML += `<button class="btn btn-primary mt-3" id="answerButton">Responder</button>`
 
-        } else if (answer.indexOf(':') > 0) { //Horas
+        } else if (answer.indexOf(':') > 0) {
             answerElement.innerHTML += `
                 <div class="answer">
                     <label for="answer">Respuesta</label>
@@ -97,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>
             `
 
-        } else if (answer.indexOf('/') > 0) { //Fecha
+        } else if (answer.indexOf('/') > 0) {
             answerElement.innerHTML += `
             <div class="answer">
                 <label for="answer">Respuesta</label>
@@ -114,7 +117,6 @@ document.addEventListener('DOMContentLoaded', function () {
             </div>
         `
         }
-        // ver e imprimir cuantas llaves tienen
 
         const llavesElement = document.createElement('div');
         llavesElement.classList.add('llaves');
