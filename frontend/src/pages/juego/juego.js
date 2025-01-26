@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
 
-            const selectElements = document.querySelectorAll('.answer select');
+            
             console.log(pregunta.answerSelect);
             const answerSelect = pregunta.answerSelect.split(',');
             console.log(answerSelect);
@@ -72,6 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log(selectElements);
                 console.log(answerSelect.length);
                 for (let j = 0; j < comas+1; j++) {
+                    const selectElements = document.querySelectorAll(`.answerSelect${j}`);
                     for (let i = 0; i < answerSelect.length; i++) {
                         selectElements[j].innerHTML += `
                             <option value="${answerSelect[i]}">${answerSelect[i]}</option>
