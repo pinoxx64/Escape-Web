@@ -64,20 +64,21 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             
-            console.log(pregunta.answerSelect);
+        mainContent.appendChild(questionElement);
+        mainContent.appendChild(answerElement);
+
             const answerSelect = pregunta.answerSelect.split(',');
             console.log(answerSelect);
             if (pregunta.answerSelect != null) {
                 console.log('entra');
-                console.log(selectElements);
                 console.log(answerSelect.length);
                 for (let j = 0; j < comas+1; j++) {
-                    const selectElements = document.querySelectorAll(`.answerSelect${j}`);
+                    const selectElement = document.getElementById(`answerSelect${j}`);
+                    console.log(selectElement);
                     for (let i = 0; i < answerSelect.length; i++) {
-                        selectElements[j].innerHTML += `
+                        selectElement.innerHTML += `
                             <option value="${answerSelect[i]}">${answerSelect[i]}</option>
-                        `;
-                        console.log(answerSelect[i]);
+                        `
                     }
                 }
             }
@@ -107,9 +108,25 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
         }
-
         mainContent.appendChild(questionElement);
         mainContent.appendChild(answerElement);
+
+        const llave = sessionStorage.getItem('llave');
+        const keyElement = document.createElement('div');
+        keyElement.classList.add('key');
+        if (llave == null) {
+            keyElement.innerHTML = `
+            <h2>Llaves</h2>
+            <p>0/5</p>
+        `
+        }else{
+            keyElement.innerHTML = `
+            <h2>Llaves</h2>
+            <p>${llave}/5</p>
+        `;
+        }
+
+        mainContent.appendChild(keyElement);
     }
 
     juego();
