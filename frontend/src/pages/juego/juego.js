@@ -201,9 +201,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             if (respuestas.toString() === pregunta.answer) {
-                const llave = sessionStorage.getItem('llave')
-                console.log(llave+1)
-                sessionStorage.setItem('llave', llave++)
+                let llave = parseInt(sessionStorage.getItem('llave'), 10)
+                llave += 1
+                sessionStorage.setItem('llave', llave)
                 console.log('Respuesta correcta')
                 
             }else { console.log('Respuesta incorrecta') }
