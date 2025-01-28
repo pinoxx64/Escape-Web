@@ -160,6 +160,8 @@ document.addEventListener('DOMContentLoaded', function() {
             <p>${llave}/5</p>
         `
         mainContent.appendChild(keyElement)
+
+        eventoRespuesta()
     }
 
     function iniciarTemporizador(duracion, display) {
@@ -177,6 +179,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.location.href = "./../finJuego/finJuego.html"
             }
         }, 1000)
+    }
+
+    function eventoRespuesta() {
+        const answerButton = document.getElementById('answerButton');
+        answerButton.addEventListener('click', () => {
+            console.log('Botón de respuesta clicado');
+
+            const selects = answerElement.querySelectorAll('select');
+            const inputs = answerElement.querySelectorAll('input');
+            const respuestas = [];
+
+            selects.forEach(select => {
+                respuestas.push(select.value);
+            });
+
+            inputs.forEach(input => {
+                respuestas.push(input.value);
+            });
+
+            console.log('Respuestas:', respuestas);
+        });
     }
 
     juego()
