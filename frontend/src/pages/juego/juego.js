@@ -4,6 +4,7 @@ import { getPreguntas } from "../../components/preguntaAPI.js"
 document.addEventListener('DOMContentLoaded', function() {
     const cantJug = sessionStorage.getItem('jugadores')
     const userId = sessionStorage.getItem('userId')
+    sessionStorage.setItem('type', 'input')
 
     async function juego() {
         const jugadores = await getUsersCantWithId(userId, cantJug)
@@ -59,6 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
         answerElement.innerHTML = ``
 
         if (answer.indexOf(',') > 0) {
+            sessionStorage.setItem('type', 'select')
             let comas = 0
             for (let i = 0; i < answer.length; i++) {
                 if (answer[i] === ',') {
@@ -77,8 +79,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             
-        mainContent.appendChild(questionElement)
-        mainContent.appendChild(answerElement)
+            mainContent.appendChild(questionElement)
+            mainContent.appendChild(answerElement)
 
             const answerSelect = pregunta.answerSelect.split(',')
             console.log(answerSelect)
@@ -161,7 +163,8 @@ document.addEventListener('DOMContentLoaded', function() {
         `
         mainContent.appendChild(keyElement)
 
-        eventoRespuesta()
+        eventoRespuesta(pregunta)
+
     }
 
     function iniciarTemporizador(duracion, display) {
@@ -181,24 +184,29 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 1000)
     }
 
-    function eventoRespuesta() {
+    function eventoRespuesta(pregunta) {
         const answerButton = document.getElementById('answerButton');
         answerButton.addEventListener('click', () => {
-            console.log('Botón de respuesta clicado');
-
-            const selects = answerElement.querySelectorAll('select');
-            const inputs = answerElement.querySelectorAll('input');
+            const type = sessionStorage.getItem('type')
             const respuestas = [];
 
-            selects.forEach(select => {
-                respuestas.push(select.value);
-            });
-
-            inputs.forEach(input => {
+            if (type === 'select') {
+                const selects = document.querySelectorAll('select');
+                selects.forEach(select => {
+                    respuestas.push(select.value);
+                });
+            }else {
+                const input = document.getElementById('answer');
                 respuestas.push(input.value);
-            });
+            }
 
-            console.log('Respuestas:', respuestas);
+            if (respuestas.toString() === pregunta.answer) {
+                const llave = sessionStorage.getItem('llave')
+                console.log(llave+1)
+                sessionStorage.setItem('llave', llave++)
+                console.log('Respuesta correcta')
+                
+            }else { console.log('Respuesta incorrecta') }
         });
     }
 
