@@ -1,5 +1,6 @@
 import { getUsersCantWithId } from "../../components/userAPI.js"
 import { getPreguntas } from "../../components/preguntaAPI.js"
+import { postUserRol } from "../../components/userRolAPI.js"
 
 document.addEventListener('DOMContentLoaded', function() {
     const cantJug = sessionStorage.getItem('jugadores')
@@ -184,7 +185,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 1000)
     }
 
-    function eventoRespuesta(pregunta) {
+    async function eventoRespuesta(pregunta) {
         const answerButton = document.getElementById('answerButton');
         answerButton.addEventListener('click', () => {
             const type = sessionStorage.getItem('type')
@@ -204,6 +205,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 let llave = parseInt(sessionStorage.getItem('llave'), 10)
                 llave += 1
                 sessionStorage.setItem('llave', llave)
+                if (llave === 1) {
+                    const userRol = {
+                        userId: userId,
+                        rolId: 3
+                    }
+                    await postUserRol(userRol, 3)
+                }
                 console.log('Respuesta correcta')
                 
             }else { console.log('Respuesta incorrecta') }
