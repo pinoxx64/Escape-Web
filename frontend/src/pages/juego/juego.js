@@ -15,14 +15,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
         console.log(preguntas)
         // Darle al jugador una pregunta
-        const preguntaJugador = preguntas.Prueba[Math.floor(Math.random() * preguntas.Prueba.length)]
-
-        console.log(preguntaJugador)
-        // Mostrar la pregunta en la pantalla
-        mostrarPregunta(preguntaJugador)
 
         // Empezar el temporizador de 30 minutos
         iniciarTemporizador(30 * 60, document.getElementById('timer'))
+
+        //do {
+            const random = Math.floor(Math.random() * preguntas.Prueba.length)
+            const preguntaJugador = preguntas.Prueba[random]
+            console.log(preguntaJugador)
+            preguntas.Prueba.splice(random, 1)
+
+            console.log(preguntaJugador)
+            // Mostrar la pregunta en la pantalla
+            mostrarPregunta(preguntaJugador)
+        //} while (sessionStorage.getItem('llave') < 5);
 
         // Si el jugador responde correctamente primero, se le da una llave y se le pone el rol de almirante
 
@@ -210,7 +216,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         userId: userId,
                         rolId: 3
                     }
-                    await postUserRol(userRol, 3)
+                    //await postUserRol(userRol, 3)
+                }else if (llave < 5) {
+                    mostrarPregunta(pregunta)
                 }
                 console.log('Respuesta correcta')
                 
