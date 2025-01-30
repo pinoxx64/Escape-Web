@@ -23,8 +23,9 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         mostrarPregunta(preguntaActual)
         iniciarTemporizador(30 * 60, document.getElementById('timer'))
-
         eventoRespuesta(preguntaActual, preguntas)
+        
+
     }
 
     function mostrarPregunta(pregunta) {
@@ -221,5 +222,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         })
     }
 
+    function iniciarBots(cantidad) {
+        
+    }
     await juego()
 })
