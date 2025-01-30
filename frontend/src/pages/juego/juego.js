@@ -2,55 +2,34 @@ import { getUsersCantWithId } from "../../components/userAPI.js"
 import { getPreguntas } from "../../components/preguntaAPI.js"
 import { postUserRol } from "../../components/userRolAPI.js"
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function () {
     const cantJug = sessionStorage.getItem('jugadores')
     const userId = sessionStorage.getItem('userId')
     sessionStorage.setItem('type', 'input')
 
     async function juego() {
         const jugadores = await getUsersCantWithId(userId, cantJug)
-        const preguntas = await getPreguntas()
-        const llave = 0
+        const preguntasData = await getPreguntas()
+        let preguntas = preguntasData.Prueba
+
+        let llave = 0
         sessionStorage.setItem('llave', llave)
 
         console.log(preguntas)
-        // Darle al jugador una pregunta
 
-        // Empezar el temporizador de 30 minutos
+        const randomIndex = Math.floor(Math.random() * preguntas.length)
+        let preguntaActual = preguntas[randomIndex]
+        preguntas.splice(randomIndex, 1)
+
+        mostrarPregunta(preguntaActual)
         iniciarTemporizador(30 * 60, document.getElementById('timer'))
 
-        //do {
-            const random = Math.floor(Math.random() * preguntas.Prueba.length)
-            const preguntaJugador = preguntas.Prueba[random]
-            console.log(preguntaJugador)
-            preguntas.Prueba.splice(random, 1)
-
-            console.log(preguntaJugador)
-            // Mostrar la pregunta en la pantalla
-            mostrarPregunta(preguntaJugador)
-        //} while (sessionStorage.getItem('llave') < 5);
-
-        // Si el jugador responde correctamente primero, se le da una llave y se le pone el rol de almirante
-
-
-        // Si el jugador es almirante mostrar un botón para que pueda dar preguntas en especifico a los demás jugadores
-
-        // Si no ha contestado primero esperar de 5 a 8 minutos y colocarle el rol de almirante a otro jugador
-
-        // Cuando termine la partida se asignaran los puntos a cada jugador: 1 por cada llave obtenida, 1 por convertirse en almirante y 2 si ganan la partida y 0 si pierden
+        eventoRespuesta(preguntaActual, preguntas)
     }
 
     function mostrarPregunta(pregunta) {
         const mainContent = document.querySelector('.main-content')
-
-        const timerElement = document.createElement('div')
-        timerElement.id = 'timer'
-        timerElement.style.position = 'absolute'
-        timerElement.style.top = '10px'
-        timerElement.style.right = '10px'
-        timerElement.style.fontSize = '24px'
-        timerElement.style.color = 'white'
-        mainContent.appendChild(timerElement)
+        mainContent.innerHTML = ''
 
         const questionElement = document.createElement('div')
         questionElement.classList.add('question')
@@ -85,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
 
-            
+            console.log(answerElement)
             mainContent.appendChild(questionElement)
             mainContent.appendChild(answerElement)
 
@@ -94,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (pregunta.answerSelect != null) {
                 console.log('entra')
                 console.log(answerSelect.length)
-                for (let j = 0; j < comas+1; j++) {
+                for (let j = 0; j < comas + 1; j++) {
                     const selectElement = document.getElementById(`answerSelect${j}`)
                     console.log(selectElement)
                     for (let i = 0; i < answerSelect.length; i++) {
@@ -106,14 +85,19 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             answerElement.innerHTML += `<button class="btn btn-primary mt-3" id="answerButton">Responder</button>`
         } else if (answer.indexOf(':') > 0) {
+            sessionStorage.setItem('type', 'input')
             answerElement.innerHTML += `
                 <div class="answer">
                     <label for="answer">Respuesta</label>
-                    <input type="time" id="answer" class="form-control">
+                    <input type="time" step="1" id="answer" class="form-control">
                     <button class="btn btn-primary mt-3" id="answerButton">Responder</button>
                 </div>
             `
+            console.log(answerElement)
+            mainContent.appendChild(questionElement)
+            mainContent.appendChild(answerElement)
         } else if (answer.indexOf('/') > 0) {
+            sessionStorage.setItem('type', 'input')
             answerElement.innerHTML += `
             <div class="answer">
                 <label for="answer">Respuesta</label>
@@ -121,7 +105,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 <button class="btn btn-primary mt-3" id="answerButton">Responder</button>
             </div>
         `
+        console.log(answerElement)
+        mainContent.appendChild(questionElement)
+        mainContent.appendChild(answerElement)
         } else {
+            sessionStorage.setItem('type', 'input')
             answerElement.innerHTML += `
             <div class="answer">
                 <label for="answer">Respuesta</label>
@@ -129,9 +117,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 <button class="btn btn-primary mt-3" id="answerButton">Responder</button>
             </div>
         `
-        }
+        console.log(answerElement)
         mainContent.appendChild(questionElement)
         mainContent.appendChild(answerElement)
+        }
+
 
         const clueButtonElement = document.createElement('button')
         clueButtonElement.classList.add('btn', 'btn-secondary', 'mt-3')
@@ -164,26 +154,21 @@ document.addEventListener('DOMContentLoaded', function() {
         const llave = sessionStorage.getItem('llave')
         const keyElement = document.createElement('div')
         keyElement.classList.add('key')
-            keyElement.innerHTML = `
+        keyElement.innerHTML = `
             <h2>Llaves</h2>
             <p>${llave}/5</p>
         `
         mainContent.appendChild(keyElement)
-
-        eventoRespuesta(pregunta)
-
     }
 
     function iniciarTemporizador(duracion, display) {
-        let timer = duracion, minutes, seconds
-        setInterval(function () {
-            minutes = parseInt(timer / 60, 10)
-            seconds = parseInt(timer % 60, 10)
 
-            minutes = minutes < 10 ? "0" + minutes : minutes
-            seconds = seconds < 10 ? "0" + seconds : seconds
+        let timer = duracion
+        setInterval(() => {
+            let minutes = parseInt(timer / 60, 10)
+            let seconds = parseInt(timer % 60, 10)
 
-            display.textContent = minutes + ":" + seconds
+            display.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
 
             if (--timer < 0) {
                 window.location.href = "./../finJuego/finJuego.html"
@@ -191,40 +176,50 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 1000)
     }
 
-    async function eventoRespuesta(pregunta) {
-        const answerButton = document.getElementById('answerButton');
-        answerButton.addEventListener('click', () => {
+    function eventoRespuesta(preguntaActual, preguntas) {
+        document.getElementById('answerButton').addEventListener('click', () => {
             const type = sessionStorage.getItem('type')
-            const respuestas = [];
+            console.log(type)
+            let respuestas = []
 
             if (type === 'select') {
-                const selects = document.querySelectorAll('select');
-                selects.forEach(select => {
-                    respuestas.push(select.value);
-                });
-            }else {
-                const input = document.getElementById('answer');
-                respuestas.push(input.value);
+                document.querySelectorAll('select').forEach(select => respuestas.push(select.value))
+                console.log(respuestas)
+            } else {
+                console.log(document.getElementById('answer'))
+                respuestas.push(document.getElementById('answer').value)
             }
 
-            if (respuestas.toString() === pregunta.answer) {
-                let llave = parseInt(sessionStorage.getItem('llave'), 10)
-                llave += 1
+            if (respuestas.toString() === preguntaActual.answer) {
+                let llave = parseInt(sessionStorage.getItem('llave'), 10) + 1
                 sessionStorage.setItem('llave', llave)
+
                 if (llave === 1) {
-                    const userRol = {
-                        userId: userId,
-                        rolId: 3
-                    }
-                    //await postUserRol(userRol, 3)
-                }else if (llave < 5) {
-                    mostrarPregunta(pregunta)
+                    const userRol = { userId: sessionStorage.getItem('userId'), rolId: 3 }
+                    // await postUserRol(userRol, 3)
+                }else if(llave === 5){
+                    window.location.href = "./../finJuego/finJuego.html"
                 }
+
                 console.log('Respuesta correcta')
-                
-            }else { console.log('Respuesta incorrecta') }
-        });
+
+                if (llave < 5 && preguntas.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * preguntas.length)
+                    let nuevaPregunta = preguntas[randomIndex]
+                    preguntas.splice(randomIndex, 1)
+                    mostrarPregunta(nuevaPregunta)
+                    eventoRespuesta(nuevaPregunta, preguntas)
+                }
+            } else {
+                if (sessionStorage.getItem('type') === 'input') {
+                    document.getElementById('answer').style.borderColor = 'red'
+                    console.log('Respuesta incorrecta')
+                }else{
+                    document.querySelectorAll('select').forEach(select => select.style.borderColor = 'red')
+                }
+            }
+        })
     }
 
-    juego()
+    await juego()
 })

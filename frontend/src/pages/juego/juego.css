@@ -86,3 +86,11 @@ a:hover {
 .modal-content.text-black {
     color: black;
 }
+
+.timer{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: white;
+    font-size: 40px;
+}
