@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 respuestas.push(document.getElementById('answer').value)
             }
 
-            if (respuestas.toString() === preguntaActual.answer) {
+            if (respuestas.toString() === preguntaActual.answer) { //Pasar la resolución al back
                 let llave = parseInt(sessionStorage.getItem('llave'), 10) + 1
                 sessionStorage.setItem('llave', llave)
 
@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 console.log('Respuesta correcta')
 
                 if (llave < 5 && preguntas.length > 0) {
-                    const randomIndex = Math.floor(Math.random() * preguntas.length)
+                    const randomIndex = Math.floor(Math.random() * preguntas.length) //Pasar la asignación al back
                     let nuevaPregunta = preguntas[randomIndex]
                     preguntas.splice(randomIndex, 1)
                     mostrarPregunta(nuevaPregunta)
