@@ -45,6 +45,8 @@ Route::prefix('prueba')->group(function () {
     Route::get('/{id}', [pruebaController::class, 'getPruebaById']);
     Route::post('/', [pruebaController::class, 'postPrueba']);
     Route::put('/{id}', [pruebaController::class, 'putPrueba']);
+    Route::put('/answer/{id}', [pruebaController::class, 'resultPrueba']);
+    Route::put('/asig/nuevo', [pruebaController::class, 'asigPruebas']);
 });
 
 Route::post('login', [AuthController::class, 'login']);
