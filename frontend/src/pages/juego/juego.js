@@ -1,6 +1,6 @@
 import { getUsersCantWithId } from "../../components/userAPI.js";
 import { asigPregunta, getPreguntas, resultPregunta } from "../../components/preguntaAPI.js";
-import { deleteUserRol, postUserRol, getUserRolByUserId} from "../../components/userRolAPI.js";
+import { deleteUserRol, postUserRol, getUserRolByUserId } from "../../components/userRolAPI.js";
 
 document.addEventListener('DOMContentLoaded', async function () {
     const cantJug = sessionStorage.getItem('jugadores');
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         await mostrarPregunta(preguntaActual);
         iniciarTemporizador(30 * 60, document.getElementById('timer'));
-        eventoRespuesta(preguntaActual, preguntas);
+        eventoRespuesta(preguntaActual, preguntas, jugadores);
     }
 
     async function mostrarPregunta(pregunta) {
@@ -46,6 +46,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         answerElement.innerHTML = ``;
 
         if (answer.indexOf(',') > 0) {
+            answerElement.setAttribute('id', 'selects')
             sessionStorage.setItem('type', 'select');
             let comas = 0;
             for (let i = 0; i < answer.length; i++) {
@@ -158,20 +159,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             <p>${llave}/5</p>
         `;
         mainContent.appendChild(keyElement);
-        
-        const userRol = await getUserRolByUserId(userId)
-        let cont = false
-        let num = 0
-        do {
-            console.log(userRol.user[num].rolId )
-            if (userRol.user[num].rolId == 3) {
-                cont = true
-            }
-            num++
-        } while (cont == false);
-        if (cont) {
-            // Aqui agregar para que añada la parte correspondiente al almirante
-        }
+
     }
 
     function iniciarTemporizador(duracion, display) {
@@ -186,65 +174,113 @@ document.addEventListener('DOMContentLoaded', async function () {
             display.textContent = minutes + ":" + seconds;
 
             if (--timer < 0) {
+                sessionStorage.setItem("ganar", false)
                 window.location.href = "./../finJuego/finJuego.html";
             }
         }, 1000);
     }
 
-    async function eventoRespuesta(preguntaActual, preguntas) {
+    async function eventoRespuesta(preguntaActual, preguntas, jugadores) {
         document.getElementById('answerButton').addEventListener('click', async () => {
             const type = sessionStorage.getItem('type');
             console.log(type);
             let respuestas = [];
 
             if (type === 'select') {
-                document.querySelectorAll('select').forEach(select => respuestas.push(select.value));
+                const selectsContainer = document.getElementById('selects');
+                if (selectsContainer) {
+                    selectsContainer.querySelectorAll('select').forEach(select => respuestas.push(select.value));
+                }
                 console.log(respuestas);
             } else {
                 console.log(document.getElementById('answer'));
                 respuestas.push(document.getElementById('answer').value);
             }
-            
+
             const answer = {
                 answer: respuestas.toString()
-            }
+            };
 
             if (await resultPregunta(preguntaActual.id, answer)) {
-                let llave = parseInt(sessionStorage.getItem('llave'), 10) + 1
-                sessionStorage.setItem('llave', llave)
-                const userRol = { userId: sessionStorage.getItem('userId'), rolId: 3 }
+                let llave = parseInt(sessionStorage.getItem('llave'), 10) + 1;
+                sessionStorage.setItem('llave', llave);
+                const userRol = { userId: sessionStorage.getItem('userId'), rolId: 3 };
+                console.log(userRol)
                 if (llave === 1) {
                     await postUserRol(userRol, 3);
                 } else if (llave === 5) {
-                    await deleteUserRol(userRol, 3)
+                    await deleteUserRol(userRol.userId, 3);
+                    sessionStorage.setItem("ganar", true)
                     window.location.href = "./../finJuego/finJuego.html";
                 }
 
                 console.log('Respuesta correcta');
 
                 if (llave < 5 && preguntas.length > 0) {
-                    
                     const preguntasArray = {
                         preguntas: preguntas
-                    }
-                    const preguntasCambiadas = await asigPregunta(preguntasArray)
-                    console.log(preguntasCambiadas)
-                    console.log(preguntasCambiadas.NuevaPrueba)
-                    await mostrarPregunta(preguntasCambiadas.NuevaPrueba);
-                    eventoRespuesta(preguntasCambiadas.NuevaPrueba, preguntasCambiadas.Prueba);
+                    };
+                    const preguntasCambiadas = await asigPregunta(preguntasArray);
+                    console.log(preguntasCambiadas);
+                    console.log(preguntasCambiadas.NuevaPrueba);
+                    await mostrarPregunta(preguntasCambiadas.NuevaPrueba, jugadores);
+                    eventoRespuesta(preguntasCambiadas.NuevaPrueba, preguntasCambiadas.Prueba, jugadores);
+                    mostrarJugadoresAlmirante(preguntasCambiadas.Prueba, jugadores)
                 }
             } else {
                 if (sessionStorage.getItem('type') === 'input') {
                     document.getElementById('answer').style.borderColor = 'red';
                     console.log('Respuesta incorrecta');
                 } else {
-                    document.querySelectorAll('select').forEach(select => select.style.borderColor = 'red');
+                    const selectsContainer = document.getElementById('selects');
+                    if (selectsContainer) {
+                        selectsContainer.querySelectorAll('select').forEach(select => select.style.borderColor = 'red');
+                    }
                 }
             }
         });
     }
 
-    function iniciarBot(){
+    async function mostrarJugadoresAlmirante(preguntas, jugadores) {
+        const mainContent = document.querySelector('.main-content');
+
+        const userRol = await getUserRolByUserId(userId)
+        let cont = false
+        let num = 0
+        do {
+            console.log(userRol.user[num].rolId)
+            if (userRol.user[num].rolId == 3) {
+                cont = true
+            }
+            num++
+        } while (cont == false);
+        if (cont) {
+            const usersElement = document.createElement('div');
+            usersElement.classList.add('users');
+            usersElement.style.position = 'absolute';
+            usersElement.style.right = '10px';
+            usersElement.style.top = '50px';
+            usersElement.style.textAlign = 'left';
+            console.log(preguntas)
+
+            jugadores.user.forEach(jugador => {
+                const userDiv = document.createElement('div');
+                userDiv.classList.add('user');
+                userDiv.innerHTML = `
+                    <p>${jugador.name}</p>
+                    <select class="form-select mt-1">
+                        ${preguntas.length < jugadores.user.length ? '<option value="ninguna">Ninguna</option>' : ''}
+                        ${preguntas.map(pregun => `<option value="${pregun.id}">${pregun.id}</option>`).join('')}
+                    </select>
+                `;
+                usersElement.appendChild(userDiv);
+            });
+
+            mainContent.appendChild(usersElement);
+        }
+    }
+
+    function iniciarBot() {
         //Cronometro hasta que vea si el usuario acierta la pregunta antes de X minutos
         //Si el jugador no es el primero darle un rol a un bot
         //Cada X minutos los bots resolveran problemas
