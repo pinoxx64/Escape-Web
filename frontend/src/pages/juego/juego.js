@@ -206,10 +206,16 @@ document.addEventListener('DOMContentLoaded', async function () {
                 sessionStorage.setItem('llave', llave);
                 const userRol = { userId: sessionStorage.getItem('userId'), rolId: 3 };
                 console.log(userRol)
-                if (llave === 1) {
+                if (llave === 1 ) { //poner aqui que si ya esta ocupado el rol de almirante no lo asigne
                     await postUserRol(userRol, 3);
                 } else if (llave === 5) {
                     await deleteUserRol(userRol.userId, 3);
+                    console.log(jugadores.user.length)
+                    let idJugadores = [userId]
+                    for (let i = 0; i < jugadores.user.length; i++) {
+                        idJugadores.push(jugadores.user[i].id)
+                    }
+                    sessionStorage.setItem("jugadoresEnPartida", idJugadores)
                     sessionStorage.setItem("ganar", true)
                     window.location.href = "./../finJuego/finJuego.html";
                 }
@@ -253,7 +259,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 cont = true
             }
             num++
-        } while (cont == false);
+        } while (cont == false || num > userRol.user[num].length);
         if (cont) {
             const usersElement = document.createElement('div');
             usersElement.classList.add('users');

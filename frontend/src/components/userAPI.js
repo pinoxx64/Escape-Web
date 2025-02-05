@@ -118,6 +118,7 @@ export const putUser = async (userId, user) => {
         }
 
         const resultado = await respuesta.json()
+        console.log(resultado)
         return resultado
     } catch (error) {
         console.error('Error en la función putuser:', error.message)

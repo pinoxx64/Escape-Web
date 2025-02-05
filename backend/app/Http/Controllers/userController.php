@@ -67,7 +67,8 @@ class userController extends Controller
         $datosUser = [
             'name' => $request['name'],
             'email' => $request['email'],
-            'active' => $request['active']
+            'active' => $request['active'],
+            'score' => $request['score']
         ];
 
         if ($request->filled('password')) {
