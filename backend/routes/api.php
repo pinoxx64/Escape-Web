@@ -42,6 +42,7 @@ Route::prefix('userRol')->group(function () {
 
 Route::prefix('prueba')->group(function () {
     Route::get('/', [pruebaController::class, 'getPruebas']);
+    Route::get('/actives', [pruebaController::class, 'getPruebasActives']);
     Route::get('/{id}', [pruebaController::class, 'getPruebaById']);
     Route::post('/', [pruebaController::class, 'postPrueba']);
     Route::put('/{id}', [pruebaController::class, 'putPrueba']);

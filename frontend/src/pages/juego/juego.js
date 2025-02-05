@@ -1,5 +1,5 @@
 import { getUsersCantWithId } from "../../components/userAPI.js";
-import { asigPregunta, getPreguntas, resultPregunta } from "../../components/preguntaAPI.js";
+import { asigPregunta, getPreguntasActives, resultPregunta } from "../../components/preguntaAPI.js";
 import { deleteUserRol, postUserRol, getUserRolByUserId } from "../../components/userRolAPI.js";
 
 document.addEventListener('DOMContentLoaded', async function () {
@@ -9,8 +9,9 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     async function juego() {
         const jugadores = await getUsersCantWithId(userId, cantJug);
-        const preguntasData = await getPreguntas();
-        let preguntas = preguntasData.Prueba;
+        const preguntasData = await getPreguntasActives();
+        console.log(preguntasData)
+        let preguntas = preguntasData.PruebasActivas;
 
         let llave = 0;
         sessionStorage.setItem('llave', llave);
@@ -22,7 +23,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         preguntas.splice(randomIndex, 1);
 
         await mostrarPregunta(preguntaActual);
-        iniciarTemporizador(30 * 60, document.getElementById('timer'));
+        iniciarBot(jugadores, preguntas);
+        iniciarTemporizador(1800, document.getElementById('timer'));
         eventoRespuesta(preguntaActual, preguntas, jugadores);
     }
 
@@ -163,18 +165,18 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     function iniciarTemporizador(duracion, display) {
-        let timer = duracion, minutes, seconds;
+        let timer = duracion, minutos, segundos;
         setInterval(function () {
-            minutes = parseInt(timer / 60, 10);
-            seconds = parseInt(timer % 60, 10);
+            minutos = parseInt(timer / 60, 10);
+            segundos = parseInt(timer % 60, 10);
 
-            minutes = minutes < 10 ? "0" + minutes : minutes;
-            seconds = seconds < 10 ? "0" + seconds : seconds;
+            minutos = minutos < 10 ? "0" + minutos : minutos;
+            segundos = segundos < 10 ? "0" + segundos : segundos;
 
-            display.textContent = minutes + ":" + seconds;
+            display.textContent = minutos + ":" + segundos;
 
             if (--timer < 0) {
-                sessionStorage.setItem("ganar", false)
+                sessionStorage.setItem('ganar', false)
                 window.location.href = "./../finJuego/finJuego.html";
             }
         }, 1000);
@@ -259,7 +261,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 cont = true
             }
             num++
-        } while (cont == false || num > userRol.user[num].length);
+        } while (cont == false || num > userRol.user.length);
         if (cont) {
             const usersElement = document.createElement('div');
             usersElement.classList.add('users');
@@ -286,11 +288,55 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     }
 
-    function iniciarBot() {
-        //Cronometro hasta que vea si el usuario acierta la pregunta antes de X minutos
-        //Si el jugador no es el primero darle un rol a un bot
-        //Cada X minutos los bots resolveran problemas
+    async function iniciarBot(jugadores, preguntas) {
+        jugadores.user.forEach(jugador => {
+            if (jugador.rolId !== 3) {
+                const randomTime = Math.floor(Math.random() * 3 + 4) * 60000;
+                setTimeout(async () => {
+                    const selectElement = document.querySelector(`.user select`);
+                    if (selectElement) {
+                        const preguntaId = selectElement.value;
+                        const pregunta = preguntas.find(p => p.id == preguntaId);
+                        if (pregunta) {
+                            const answer = {
+                                answer: pregunta.answer
+                            };
+                            if (await resultPregunta(pregunta.id, answer)) {
+                                let llave = parseInt(sessionStorage.getItem('llave'), 10) + 1;
+                                sessionStorage.setItem('llave', llave);
+                                console.log('Bot ha resuelto una pregunta correctamente');
 
+                                if (llave === 1) {
+                                    const userRol = { userId: jugador.id, rolId: 3 };
+                                    await postUserRol(userRol, 3);
+                                } else if (llave === 5) {
+                                    await deleteUserRol(userRol.userId, 3);
+                                    let idJugadores = [userId];
+                                    for (let i = 0; i < jugadores.user.length; i++) {
+                                        idJugadores.push(jugadores.user[i].id);
+                                    }
+                                    sessionStorage.setItem("jugadoresEnPartida", idJugadores);
+                                    sessionStorage.setItem("ganar", true);
+                                    window.location.href = "./../finJuego/finJuego.html";
+                                }
+
+                                if (llave < 5 && preguntas.length > 0) {
+                                    const preguntasArray = {
+                                        preguntas: preguntas
+                                    };
+                                    const preguntasCambiadas = await asigPregunta(preguntasArray);
+                                    console.log(preguntasCambiadas);
+                                    console.log(preguntasCambiadas.NuevaPrueba);
+                                    await mostrarPregunta(preguntasCambiadas.NuevaPrueba, jugadores);
+                                    eventoRespuesta(preguntasCambiadas.NuevaPrueba, preguntasCambiadas.Prueba, jugadores);
+                                    mostrarJugadoresAlmirante(preguntasCambiadas.Prueba, jugadores);
+                                }
+                            }
+                        }
+                    }
+                }, randomTime);
+            }
+        });
     }
 
     await juego();

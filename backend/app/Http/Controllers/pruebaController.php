@@ -16,6 +16,12 @@ class pruebaController extends Controller
         return response()->json(['Prueba' => $prueba]);
     }
 
+    public function getPruebasActives()
+    {
+        $pruebasActivas = Prueba::where('active', 1)->get();
+        return response()->json(['PruebasActivas' => $pruebasActivas], Response::HTTP_OK);
+    }
+
     public function getPruebaById($id)
     {
         $prueba = Prueba::find($id);

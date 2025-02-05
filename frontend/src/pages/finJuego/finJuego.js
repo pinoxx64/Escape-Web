@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     messageElement.style.marginTop = '20%'
     console.log(jugadores)
 
-    if (ganar) {
+    if (ganar === "true") {
         messageElement.textContent = '¡Habéis escapado!'
 
         for (const jugador of jugadores) {

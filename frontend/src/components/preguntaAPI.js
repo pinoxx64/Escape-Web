@@ -24,6 +24,30 @@ export const getPreguntas = async () => {
     }
 }
 
+export const getPreguntasActives = async () => {
+    const rutaPrueba = constantes.urlApi + constantes.prueba
+
+    try {
+        const respuesta = await fetch(rutaPrueba + 'actives', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        if (!respuesta.ok) {
+            throw new Error(`Error al obtener la lista de Pruebas. Código de estado: ${respuesta.status}`)
+        }
+
+        const pruebas = await respuesta.json()
+        return pruebas
+
+    } catch (error) {
+        console.error('Error en la función getPrueba:', error.message)
+        throw error
+    }
+}
+
 export const getPreguntaById = async (pruebaId) => {
     const rutaPrueba = constantes.urlApi + constantes.prueba
 
