@@ -14,8 +14,10 @@ Route::prefix('user')->group(function () {
     Route::get('/email/{email}', [userController::class, 'getUserByEmail']);
     Route::post('/', [userController::class, 'postUser']);
     Route::put('/{id}', [userController::class, 'putUser']);
-
     Route::get('/emailExist/{email}', [userController::class, 'getIfEmailExist']);
+    Route::get('/userExclude/{id}/{num}', [userController::class, 'getUsersExcludingId']);
+    Route::get('/userCant/{num}', [userController::class, 'getUsersCant']);
+    Route::get('/userCantWithId/{id}/{num}', [userController::class, 'getUsersCantWithId']);
 });
 Route::prefix('userScore')->group(function () {
     Route::get('/', [userController::class, 'getUserOrderByScore']);
@@ -40,9 +42,12 @@ Route::prefix('userRol')->group(function () {
 
 Route::prefix('prueba')->group(function () {
     Route::get('/', [pruebaController::class, 'getPruebas']);
+    Route::get('/actives', [pruebaController::class, 'getPruebasActives']);
     Route::get('/{id}', [pruebaController::class, 'getPruebaById']);
     Route::post('/', [pruebaController::class, 'postPrueba']);
     Route::put('/{id}', [pruebaController::class, 'putPrueba']);
+    Route::put('/answer/{id}', [pruebaController::class, 'resultPrueba']);
+    Route::put('/asig/nuevo', [pruebaController::class, 'asigPruebas']);
 });
 
 Route::post('login', [AuthController::class, 'login']);

@@ -16,6 +16,12 @@ class pruebaController extends Controller
         return response()->json(['Prueba' => $prueba]);
     }
 
+    public function getPruebasActives()
+    {
+        $pruebasActivas = Prueba::where('active', 1)->get();
+        return response()->json(['PruebasActivas' => $pruebasActivas], Response::HTTP_OK);
+    }
+
     public function getPruebaById($id)
     {
         $prueba = Prueba::find($id);
@@ -61,4 +67,28 @@ class pruebaController extends Controller
         $prueba->save();
         return response()->json(['Prueba' => $prueba], Response::HTTP_OK);
     }
+
+    public function resultPrueba(Request $request, $id)
+    {
+        $answer = $request['answer'];
+        $prue = self::getPruebaById($id);
+        $prueba = json_decode($prue->getContent(), true);
+        if ($prueba['Prueba']['answer'] == $answer) {
+            return true;
+        }else{
+            return 0;
+        }
+    }
+
+    public function asigPruebas(Request $request)
+    {
+        $pruebas = $request['preguntas'];
+        $num = array_rand($pruebas);
+        $nuevaPrueba = $pruebas[$num];
+        unset($pruebas[$num]);
+        $pruebasActuales = array_values($pruebas);
+
+        return response()->json(['NuevaPrueba' => $nuevaPrueba, 'Prueba' => $pruebasActuales], Response::HTTP_OK);
+    }
+
 }   

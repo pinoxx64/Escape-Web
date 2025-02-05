@@ -54,9 +54,7 @@ class userRolController extends Controller
 
     public function deleteUserRolByIds($userId, $rolId)
     {
-        $userRol = UserRol::where('userId', $userId)
-                                ->where('rolId', $rolId)
-                                ->first();
+        $userRol = UserRol::where('userId', $userId)->where('rolId', $rolId);
 
         if ($userRol) {
             $userRol->delete();

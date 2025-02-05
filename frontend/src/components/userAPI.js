@@ -118,6 +118,7 @@ export const putUser = async (userId, user) => {
         }
 
         const resultado = await respuesta.json()
+        console.log(resultado)
         return resultado
     } catch (error) {
         console.error('Error en la función putuser:', error.message)
@@ -174,6 +175,54 @@ export const getUserOrderByScore = async () => {
 
 export const getUsersWithUserRol= async () => {
     const rutaUser = constantes.urlApi + 'userUserRol'
+
+    try {
+        const respuesta = await fetch(rutaUser, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        if (!respuesta.ok) {
+            throw new Error(`Error al obtener la lista de users. Código de estado: ${respuesta.status}`)
+        }
+
+        const users = await respuesta.json()
+        return users
+
+    } catch (error) {
+        console.error('Error en la función getUser:', error.message)
+        throw error
+    }
+}
+
+export const getUsersExcludingId = async (id, num) => {
+    const rutaUser = constantes.urlApi + constantes.user + 'userExclude/' + id + '/' + num
+
+    try {
+        const respuesta = await fetch(rutaUser, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        if (!respuesta.ok) {
+            throw new Error(`Error al obtener la lista de users. Código de estado: ${respuesta.status}`)
+        }
+
+        const users = await respuesta.json()
+        return users
+
+    } catch (error) {
+        console.error('Error en la función getUser:', error.message)
+        throw error
+    }
+}
+
+export const getUsersCantWithId = async (id, num) => {
+    const rutaUser = constantes.urlApi + constantes.user + 'userCantWithId/' + id + '/' + num
 
     try {
         const respuesta = await fetch(rutaUser, {

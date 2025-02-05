@@ -31,7 +31,7 @@ class PruebaSeeder extends Seeder
             ],
             [
                 'question' => '"Tres agujas en tres alturas difieren. Una es gruesa,una es alta y otra fina. De lento a rápido a la derecha se mueven. Scott no se posa en el 3,sino que en el 15 atina. Mildred en el 10 no está,sino que al 2 fue a parar siendo Henry quien erró y en uno atras acabó" En la parte lateral del reloj se encuentra la siguiente nota: "Las cicatrices del pasado deben eliminar el clavo que detiene el Tiempo". Frente al reloj hay tres flechas en la pared,al lado de cada una están los nombres de: Henry,Mildred,y Scott,respectivamente.',
-                'answer' => '9:10:15',
+                'answer' => '09:10:15',
                 'clue' => 'Henry,Mildred y Scott son las agujas del reloj',
                 'answerSelect' => null,
                 'active' => 1
