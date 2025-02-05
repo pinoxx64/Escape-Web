@@ -24,6 +24,30 @@ export const getPreguntas = async () => {
     }
 }
 
+export const getPreguntasActives = async () => {
+    const rutaPrueba = constantes.urlApi + constantes.prueba
+
+    try {
+        const respuesta = await fetch(rutaPrueba + 'actives', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        if (!respuesta.ok) {
+            throw new Error(`Error al obtener la lista de Pruebas. Código de estado: ${respuesta.status}`)
+        }
+
+        const pruebas = await respuesta.json()
+        return pruebas
+
+    } catch (error) {
+        console.error('Error en la función getPrueba:', error.message)
+        throw error
+    }
+}
+
 export const getPreguntaById = async (pruebaId) => {
     const rutaPrueba = constantes.urlApi + constantes.prueba
 
@@ -55,8 +79,7 @@ export const postPregunta = async (prueba) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                //'Authorization': 'Bearer ' + token
+                'Accept': 'application/json'
             },
             body: JSON.stringify(prueba),
         })
@@ -93,6 +116,53 @@ export const putPregunta = async (pruebaId, prueba) => {
         return resultado
     } catch (error) {
         console.error('Error en la función putPrueba:', error.message)
+        throw error
+    }
+}
+
+export const resultPregunta = async (pruebaId, answer) => {
+    const rutaPrueba = constantes.urlApi + constantes.prueba
+    try {
+        const respuesta = await fetch(rutaPrueba + 'answer/' + pruebaId, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(answer),
+        })
+
+        if (!respuesta.ok) {
+            throw new Error(`Error al comprobar el Prueba. Código de estado: ${respuesta.status}`)
+        }
+
+        const resultado = await respuesta.json()
+        return resultado
+    } catch (error) {
+        console.error('Error en la función resultPregunta:', error.message)
+        throw error
+    }
+}
+
+export const asigPregunta = async (pruebas) => {
+    const rutaPrueba = constantes.urlApi + constantes.prueba
+
+    try {
+        const respuesta = await fetch(rutaPrueba + 'asig/nuevo', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(pruebas),
+        })
+        if (!respuesta.ok) {
+            throw new Error(`Error al asignar el Prueba. Código de estado: ${respuesta.status}`)
+        }
+
+        const resultado = await respuesta.json()
+        console.log(resultado)
+        return resultado
+    } catch (error) {
+        console.error('Error en la función asigPregunta:', error.message)
         throw error
     }
 }

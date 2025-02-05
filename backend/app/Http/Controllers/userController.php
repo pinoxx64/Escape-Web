@@ -67,7 +67,8 @@ class userController extends Controller
         $datosUser = [
             'name' => $request['name'],
             'email' => $request['email'],
-            'active' => $request['active']
+            'active' => $request['active'],
+            'score' => $request['score']
         ];
 
         if ($request->filled('password')) {
@@ -98,5 +99,33 @@ class userController extends Controller
         $user = self::getUser();
         $userRol = UserRol::all();
         return response()->json(['user' => $user, 'userRol' => $userRol]);
+    }
+
+    public function getUsersExcludingId($id, $num)
+    {
+        $users = User::where('id', '!=', $id)->take($num)->get();
+
+        if ($users->isEmpty()) {
+            return response()->json(['message' => 'No users found'], 404);
+        }
+
+        return response()->json(['users' => $users]);
+    }
+
+    public function getUsersCantWithId($id, $cant)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        $users = User::where('id', '!=', $id)->take($cant)->get();
+
+        if ($users->isEmpty()) {
+            return response()->json(['message' => 'No users found'], 404);
+        }
+
+        return response()->json(['user' => $user, 'user' => $users]);
     }
 }
